@@ -1,0 +1,244 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Fitness Brand Design System - Dark First */
+  --font-size: 16px;
+
+  /* Colors - Neutral Scale (Base Dark) */
+  --neutral-950: #0D0D0D;
+  --neutral-900: #1A1A1A;
+  --neutral-800: #222222;
+  --neutral-700: #2E2E2E;
+  --neutral-500: #444444;
+  --neutral-300: #888888;
+  --neutral-050: #F5F5F5;
+
+  /* Colors - Accent Primary (Yellow Electric) */
+  --yellow-400: #E5C000;
+  --yellow-300: #F0D000;
+  --yellow-900: #1A1200;
+
+  /* Colors - Accent Secondary (Orange Flame) */
+  --orange-500: #FF5A1A;
+  --orange-700: #CC3D00;
+  --orange-050: #FFF0E8;
+
+  /* Semantic Color Roles */
+  --background: var(--neutral-950);
+  --foreground: #FFFFFF;
+  --card: var(--neutral-900);
+  --card-foreground: var(--neutral-050);
+  --popover: var(--neutral-900);
+  --popover-foreground: #FFFFFF;
+  --primary: var(--yellow-400);
+  --primary-foreground: var(--yellow-900);
+  --secondary: var(--orange-500);
+  --secondary-foreground: #FFFFFF;
+  --muted: var(--neutral-700);
+  --muted-foreground: var(--neutral-300);
+  --accent: var(--yellow-400);
+  --accent-foreground: var(--yellow-900);
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: var(--neutral-700);
+  --input: transparent;
+  --input-background: var(--neutral-800);
+  --switch-background: var(--neutral-500);
+  --ring: var(--yellow-400);
+
+  /* Font Families */
+  --font-display: 'Bebas Neue', 'Barlow Condensed', 'Anton', sans-serif;
+  --font-body: 'Inter', 'DM Sans', 'Manrope', sans-serif;
+
+  /* Typography Scale */
+  --text-h1: 80px;
+  --text-h2: 48px;
+  --text-h3: 28px;
+  --text-h4: 18px;
+  --text-body: 15px;
+  --text-caption: 12px;
+  --text-label: 11px;
+  --text-stat: 36px;
+
+  /* Font Weights */
+  --font-weight-black: 900;
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+
+  /* Spacing Scale (Base 8pt) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 80px;
+  --space-9: 120px;
+
+  /* Border Radius */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 999px;
+  --radius: var(--radius-md);
+
+  /* Charts */
+  --chart-1: var(--yellow-400);
+  --chart-2: var(--orange-500);
+  --chart-3: var(--neutral-300);
+  --chart-4: var(--yellow-300);
+  --chart-5: var(--orange-700);
+}
+
+@theme inline {
+  /* Semantic Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+
+  /* Neutral Scale */
+  --color-neutral-950: var(--neutral-950);
+  --color-neutral-900: var(--neutral-900);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-050: var(--neutral-050);
+
+  /* Accent Colors */
+  --color-yellow-400: var(--yellow-400);
+  --color-yellow-300: var(--yellow-300);
+  --color-yellow-900: var(--yellow-900);
+  --color-orange-500: var(--orange-500);
+  --color-orange-700: var(--orange-700);
+  --color-orange-050: var(--orange-050);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Border Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Font Families */
+  --font-family-display: var(--font-display);
+  --font-family-body: var(--font-body);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  html {
+    font-size: var(--font-size);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  /* Display Typography - Bebas Neue / Condensed Bold */
+  h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: var(--font-weight-black);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: var(--font-weight-black);
+    line-height: 1.0;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0em;
+    color: #FFFFFF;
+  }
+
+  h4 {
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #FFFFFF;
+  }
+
+  /* Body Typography */
+  p {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.6;
+    color: var(--neutral-050);
+  }
+
+  label {
+    font-family: var(--font-body);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  button {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.5;
+  }
+
+  input {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
