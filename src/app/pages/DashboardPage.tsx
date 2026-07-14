@@ -17,6 +17,7 @@ import {
   Radio,
 } from "lucide-react";
 import { useState } from "react";
+import { clearAuthSession } from "../utils/auth";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -30,6 +31,12 @@ export default function DashboardPage() {
     return (
       location.pathname === path || location.pathname.startsWith(path + "/")
     );
+  };
+
+  const handleLogout = () => {
+    clearAuthSession();
+    setMobileMenuOpen(false);
+    navigate("/login");
   };
 
   return (
@@ -130,6 +137,12 @@ export default function DashboardPage() {
                 }`}
               >
                 Configurações
+              </button>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-3 rounded-md font-semibold text-sm uppercase text-orange-500 hover:bg-neutral-800"
+              >
+                Sair
               </button>
             </nav>
           </motion.div>

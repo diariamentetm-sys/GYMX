@@ -1,23 +1,42 @@
 import { motion } from "motion/react";
-import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router";
+import { FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { ArrowLeft, LogOut, Shield } from "lucide-react";
 import { FormInput } from "../components/FormInput";
-import { ArrowLeft, Shield } from "lucide-react";
+import { getPostLoginRedirect } from "../services/memberService";
+import { useAuth } from "../contexts/AuthContext";
+import { scrollToPageTop } from "../utils/scroll";
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const { session, profile, loading, signIn, signOut } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    if (!loading && session && profile) {
+      navigate(getPostLoginRedirect(profile), { replace: true });
+    }
+  }, [loading, session, profile, navigate]);
+
+  const handleGoHome = () => {
+    navigate("/");
+    requestAnimationFrame(() => scrollToPageTop());
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    setEmail("");
+    setPassword("");
+    setErrors({ email: "", password: "" });
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    // Reset errors
     setErrors({ email: "", password: "" });
 
-    // Basic validation
     let hasError = false;
     const newErrors = { email: "", password: "" };
 
@@ -42,17 +61,25 @@ export function LoginPage() {
       return;
     }
 
-    // Simulate login and redirect to dashboard
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate("/dashboard");
-    }, 1500);
+    const result = await signIn(email, password);
+    setIsLoading(false);
+
+    if (result.error || !result.profile) {
+      setErrors({
+        email: "",
+        password: result.error ?? "E-mail ou senha incorretos.",
+      });
+      return;
+    }
+
+    navigate(getPostLoginRedirect(result.profile));
   };
+
+  const hasActiveSession = !!session;
 
   return (
     <div className="min-h-screen bg-neutral-950 flex flex-col">
-      {/* Header */}
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -60,32 +87,48 @@ export function LoginPage() {
         className="border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-md"
       >
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16 h-20 flex items-center justify-between">
-          {/* Logo */}
-          <motion.a
-            href="/"
+          <motion.button
+            type="button"
+            onClick={handleGoHome}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
             className="font-display text-3xl font-black tracking-tight text-white hover:text-yellow-400 transition-colors"
+            aria-label="Voltar ao topo da página inicial"
           >
             GYMX
-          </motion.a>
+          </motion.button>
 
-          {/* Back Button - Desktop */}
-          <motion.a
-            href="/"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="hidden md:flex items-center gap-2 text-neutral-300 hover:text-yellow-400 transition-colors font-medium text-sm uppercase tracking-wider"
-          >
-            <ArrowLeft size={16} />
-            Voltar para o site
-          </motion.a>
+          <div className="flex items-center gap-4">
+            {hasActiveSession && (
+              <motion.button
+                type="button"
+                onClick={handleLogout}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="hidden md:flex items-center gap-2 text-orange-500 hover:text-orange-400 transition-colors font-medium text-sm uppercase tracking-wider"
+              >
+                <LogOut size={16} />
+                Sair
+              </motion.button>
+            )}
+
+            <motion.button
+              type="button"
+              onClick={handleGoHome}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="hidden md:flex items-center gap-2 text-neutral-300 hover:text-yellow-400 transition-colors font-medium text-sm uppercase tracking-wider"
+            >
+              <ArrowLeft size={16} />
+              Voltar para o site
+            </motion.button>
+          </div>
         </div>
       </motion.header>
 
-      {/* Main Content */}
       <div className="flex-1 flex items-center justify-center px-6 py-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -93,7 +136,6 @@ export function LoginPage() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="w-full max-w-md"
         >
-          {/* Icon Badge */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -103,7 +145,6 @@ export function LoginPage() {
             <Shield className="text-yellow-400" size={32} strokeWidth={1.5} />
           </motion.div>
 
-          {/* Heading */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -118,7 +159,6 @@ export function LoginPage() {
             </p>
           </motion.div>
 
-          {/* Form */}
           <motion.form
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -126,7 +166,6 @@ export function LoginPage() {
             onSubmit={handleSubmit}
             className="space-y-6"
           >
-            {/* Email Input */}
             <FormInput
               label="Email"
               type="email"
@@ -138,7 +177,6 @@ export function LoginPage() {
               autoComplete="email"
             />
 
-            {/* Password Input */}
             <FormInput
               label="Senha"
               type="password"
@@ -150,7 +188,6 @@ export function LoginPage() {
               autoComplete="current-password"
             />
 
-            {/* Forgot Password Link */}
             <div className="flex justify-end">
               <a
                 href="/recuperar-senha"
@@ -160,20 +197,12 @@ export function LoginPage() {
               </a>
             </div>
 
-            {/* Submit Button */}
             <motion.button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || loading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className={`
-                w-full bg-yellow-400 text-yellow-900 py-4 rounded-md
-                font-bold uppercase text-sm tracking-wider
-                transition-all duration-300
-                hover:bg-yellow-300 hover:shadow-lg hover:shadow-yellow-400/20
-                disabled:opacity-50 disabled:cursor-not-allowed
-                flex items-center justify-center gap-2
-              `}
+              className="w-full bg-yellow-400 text-yellow-900 py-4 rounded-md font-bold uppercase text-sm tracking-wider transition-all duration-300 hover:bg-yellow-300 hover:shadow-lg hover:shadow-yellow-400/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
@@ -193,7 +222,6 @@ export function LoginPage() {
             </motion.button>
           </motion.form>
 
-          {/* Divider */}
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-neutral-800" />
@@ -205,42 +233,59 @@ export function LoginPage() {
             </div>
           </div>
 
-          {/* Sign Up Link */}
-          <motion.a
-            href="/#planos"
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="block w-full text-center py-4 border-2 border-neutral-700 text-white rounded-md font-bold uppercase text-sm tracking-wider hover:border-yellow-400 hover:text-yellow-400 transition-all"
+            className="space-y-3"
           >
-            Conhecer os Planos
-          </motion.a>
+            <Link
+              to="/cadastro"
+              className="block w-full text-center py-4 bg-neutral-800 border-2 border-neutral-700 text-white rounded-md font-bold uppercase text-sm tracking-wider hover:border-yellow-400 hover:text-yellow-400 transition-all"
+            >
+              Criar conta de aluno
+            </Link>
+            <a
+              href="/#planos"
+              className="block w-full text-center py-4 border-2 border-neutral-700 text-neutral-400 rounded-md font-bold uppercase text-sm tracking-wider hover:border-yellow-400 hover:text-yellow-400 transition-all"
+            >
+              Conhecer os Planos
+            </a>
+          </motion.div>
 
-          {/* Back to Home - Mobile */}
-          <motion.a
-            href="/"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="md:hidden flex items-center justify-center gap-2 text-neutral-500 hover:text-yellow-400 transition-colors text-sm mt-8"
-          >
-            <ArrowLeft size={14} />
-            Voltar para o site
-          </motion.a>
+          <div className="md:hidden flex flex-col items-center gap-4 mt-8">
+            {hasActiveSession && (
+              <motion.button
+                type="button"
+                onClick={handleLogout}
+                className="flex items-center justify-center gap-2 text-orange-500 hover:text-orange-400 transition-colors text-sm"
+              >
+                <LogOut size={14} />
+                Sair da conta
+              </motion.button>
+            )}
 
-          {/* Footer Note */}
+            <motion.button
+              type="button"
+              onClick={handleGoHome}
+              className="flex items-center justify-center gap-2 text-neutral-500 hover:text-yellow-400 transition-colors text-sm"
+            >
+              <ArrowLeft size={14} />
+              Voltar para o site
+            </motion.button>
+          </div>
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
             className="text-center text-neutral-600 text-xs mt-8 uppercase tracking-wider"
           >
-            Acesso seguro e protegido
+            Acesso seguro via Supabase Auth
           </motion.p>
         </motion.div>
       </div>
 
-      {/* Gradient Overlay */}
       <div className="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-yellow-400/5 to-transparent pointer-events-none" />
     </div>
   );

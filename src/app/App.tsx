@@ -1,6 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router";
+import { AuthProvider } from "./contexts/AuthContext";
+import { AppErrorBoundary } from "./components/AppErrorBoundary";
+import { isSupabaseConfigured } from "./lib/supabase";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { VerifyAccountPage } from "./pages/VerifyAccountPage";
+import MemberHomePage from "./pages/member/MemberHomePage";
+import MemberWorkoutPage from "./pages/member/MemberWorkoutPage";
+import MemberCheckinPage from "./pages/member/MemberCheckinPage";
+import MemberClassesPage from "./pages/member/MemberClassesPage";
+import MemberPlanPage from "./pages/member/MemberPlanPage";
+import MemberProfilePage from "./pages/member/MemberProfilePage";
+import { OnboardingPage } from "./pages/member/OnboardingPage";
+import TermsReacceptPage from "./pages/member/TermsReacceptPage";
 import DashboardPage from "./pages/DashboardPage";
 import AlunosPage from "./pages/AlunosPage";
 import NewStudentPage from "./pages/NewStudentPage";
@@ -12,11 +25,39 @@ import TreinosPage from "./pages/TreinosPage";
 import ModoRecepcaoPage from "./pages/ModoRecepcaoPage";
 
 export default function App() {
+  if (!isSupabaseConfigured) {
+    return (
+      <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-6">
+        <div className="max-w-md text-center text-neutral-300">
+          <h1 className="text-white font-bold text-xl mb-2">Configuração pendente</h1>
+          <p className="text-sm">
+            Crie o arquivo <code className="text-yellow-400">.env</code> com{" "}
+            <code className="text-yellow-400">VITE_SUPABASE_URL</code> e{" "}
+            <code className="text-yellow-400">VITE_SUPABASE_ANON_KEY</code>, depois reinicie o
+            servidor.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <BrowserRouter>
+    <AppErrorBoundary>
+    <AuthProvider>
+      <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/cadastro" element={<RegisterPage />} />
+        <Route path="/cadastro/verificacao" element={<VerifyAccountPage />} />
+        <Route path="/portal" element={<MemberHomePage />} />
+        <Route path="/portal/onboarding" element={<OnboardingPage />} />
+        <Route path="/portal/termos" element={<TermsReacceptPage />} />
+        <Route path="/portal/treino" element={<MemberWorkoutPage />} />
+        <Route path="/portal/check-in" element={<MemberCheckinPage />} />
+        <Route path="/portal/aulas" element={<MemberClassesPage />} />
+        <Route path="/portal/plano" element={<MemberPlanPage />} />
+        <Route path="/portal/perfil" element={<MemberProfilePage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/dashboard/alunos" element={<AlunosPage />} />
         <Route path="/dashboard/alunos/novo" element={<NewStudentPage />} />
@@ -27,6 +68,8 @@ export default function App() {
         <Route path="/dashboard/config" element={<ConfiguracoesPage />} />
         <Route path="/modo-recepcao" element={<ModoRecepcaoPage />} />
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
+    </AppErrorBoundary>
   );
 }

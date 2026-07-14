@@ -8,6 +8,7 @@ import {
   LogOut,
   Dumbbell
 } from "lucide-react";
+import { clearAuthSession } from "../../utils/auth";
 
 interface NavItem {
   icon: any;
@@ -27,6 +28,11 @@ export function Sidebar() {
     { icon: Dumbbell, label: "Treinos", path: "/dashboard/treinos" },
     { icon: Settings, label: "Configurações", path: "/dashboard/config" },
   ];
+
+  const handleLogout = () => {
+    clearAuthSession();
+    navigate("/login");
+  };
 
   return (
     <motion.aside
@@ -109,7 +115,7 @@ export function Sidebar() {
 
         {/* Botão Sair */}
         <motion.button
-          onClick={() => navigate("/")}
+          onClick={handleLogout}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-md text-neutral-400 hover:bg-neutral-800 hover:text-orange-500 transition-all"

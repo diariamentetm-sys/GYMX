@@ -8,8 +8,19 @@ import { FAQSection } from "../components/FAQSection";
 import { FinalCTA } from "../components/FinalCTA";
 import { ContactFormSection } from "../components/ContactFormSection";
 import { Footer } from "../components/Footer";
+import { useEffect } from "react";
+import { useLocation } from "react-router";
+import { scrollToPageTop } from "../utils/scroll";
 
 export function HomePage() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === "#inicio") {
+      scrollToPageTop();
+    }
+  }, [location.pathname, location.hash]);
+
   return (
     <div className="min-h-screen bg-neutral-950 overflow-x-hidden" id="inicio">
       <Header />

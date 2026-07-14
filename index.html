@@ -8,7 +8,20 @@
       <title>GYMX</title>
       <meta name="description" content="A high-impact fitness website showcasing gym services, membership plans, and athlete stats with a dynamic dark-themed design to engage and convert users." />
       <meta name="robots" content="noindex, nofollow" />
-      <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
+      <style>
+        html, body { height: 100%; margin: 0; background: #0a0a0a; }
+        #root { min-height: 100%; background: #0a0a0a; }
+        #root:empty::after {
+          content: "Carregando GYMX...";
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          color: #a3a3a3;
+          font-family: system-ui, sans-serif;
+          font-size: 14px;
+        }
+      </style>
       
     </head>
 
