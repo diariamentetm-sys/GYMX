@@ -1,0 +1,15 @@
+---
+description: Convenções de Git, commits e pull requests
+alwaysApply: true
+---
+
+# GitHub
+
+- Commits pequenos e descritivos.
+- Padrão: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`.
+- Nunca commitar `.env`, keys ou dados sensíveis.
+- Branch por feature: `feature/nome-curto`.
+- Abrir pull request antes de merge em `main`.
+- Revisar o diff antes de aprovar.
+- Histórico limpo. Sem commits genéricos (`update`, `wip`, `ajuste`).
+- Só criar commit ou PR quando o usuário pedir.

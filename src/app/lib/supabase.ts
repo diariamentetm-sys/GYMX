@@ -11,7 +11,10 @@ function createSupabaseClient(): SupabaseClient {
       "Configure VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no arquivo .env"
     );
   }
-  return createClient(supabaseUrl, supabaseAnonKey);
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    db: { schema: "gym_academy" },
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+  });
 }
 
 export const supabase = isSupabaseConfigured ? createSupabaseClient() : (null as unknown as SupabaseClient);

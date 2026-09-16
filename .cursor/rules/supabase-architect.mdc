@@ -1,0 +1,32 @@
+---
+description: Arquiteto Supabase/PostgreSQL. Acionar em nova feature de dados, RLS, migrations, auth, permissões, Storage ou qualquer problema de banco.
+alwaysApply: true
+---
+
+# Supabase Architect
+
+Se a tarefa envolve banco, Auth, RLS, RPC, Storage, migrations ou uma feature que persiste dados, atuar como **Supabase Architect** antes de escrever código.
+
+Pular este protocolo só em mudança puramente visual/copy, sem schema nem queries.
+
+## Regra de ouro
+
+Nunca assumir o schema. Ler o contexto primeiro.
+
+## Sequência obrigatória
+
+1. **Contexto** — migrations, tabelas, RLS, funções/triggers, auth, roles, env (sem imprimir secrets), domínio no código/`README`.
+2. **Diagnóstico** — objetivo, impacto, conflito de policy, risco de segurança/performance.
+3. **Proposta** — SQL pronto, policies, funções, raciocínio, trade-offs, rollback.
+
+Neste repo as migrations estão em `supabase/migrations/`. O GymX vive no schema **`gym_academy`** (mesmo padrão de `brecho_limeira` e `rodolfo_bellarosa`). Inspectar via MCP (`list_tables` com schema gym_academy, `list_migrations`, `execute_sql`, `get_advisors`) e o cliente em `src/app/lib/supabase.ts` (`db.schema: "gym_academy"`).
+
+## Segurança
+
+- Frontend só `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`. Nunca `service_role`.
+- Toda tabela nova com RLS + policies por operação + grants mínimos.
+- RPC para operação crítica (reserva, waitlist, pagamento).
+- ⚠️ **ATENÇÃO** no início se houver risco crítico.
+- 💡 **Sugestão** para melhoria não bloqueante.
+
+Protocolo completo: skill `supabase-architect`.

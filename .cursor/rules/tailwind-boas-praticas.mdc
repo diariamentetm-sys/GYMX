@@ -1,0 +1,25 @@
+---
+description: Boas práticas Tailwind e consistência visual do GymX
+globs: "**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Tailwind
+
+- Classes utilitárias. Evitar CSS customizado.
+- Não acumular classes longas e repetidas: extrair componente.
+- Consistência de spacing, cores e tipografia.
+- Usar o design system GymX (`DESIGN_SYSTEM_REFERENCE.md`): `yellow-400`, `neutral-950`, `rounded-md`, spacing base 8pt.
+- Mobile-first. Variantes `sm:`, `md:`, `lg:` só para o breakpoint maior.
+- Sem inline styles, salvo exceção (ex.: valor dinâmico de chart).
+- Variantes `hover`, `focus` e `focus-visible` nos interativos.
+- UI simples. Evitar overdesign.
+- Acessibilidade: contraste, `label`, estado de foco visível.
+
+```tsx
+// ❌ BAD
+<div style={{ backgroundColor: "#E5C000" }} className="mb-5 rounded-2xl">
+
+// ✅ GOOD
+<div className="bg-yellow-400 mb-6 rounded-md">
+```

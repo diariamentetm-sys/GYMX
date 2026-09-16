@@ -1,0 +1,29 @@
+---
+description: Segurança e padrões de acesso ao Supabase
+globs: "src/app/{lib,services,contexts}/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Supabase
+
+- Nunca expor `service_role` no frontend. Só `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`.
+- RLS sempre ativo. Policies explícitas por papel/ação.
+- Validar dados no cliente antes do insert/update, e de novo no banco quando a regra for crítica.
+- Lógica complexa (reserva, waitlist, verificação) via RPC, não no frontend.
+- Tabelas com nomes claros e consistentes (`member_*`, `gym_*`).
+- Sempre tratar `error` das queries e mostrar fallback.
+- Evitar N+1 e chamadas repetidas. Preferir um select com joins ou RPC.
+- `select` específico. Evitar `select("*")` em dados sensíveis.
+
+```ts
+// ❌ BAD
+const { data } = await supabase.from("member_profiles").select("*");
+
+// ✅ GOOD
+const { data, error } = await supabase
+  .from("member_profiles")
+  .select("id, full_name, status, email")
+  .eq("id", userId)
+  .maybeSingle();
+if (error) return { profile: null, error: error.message };
+```

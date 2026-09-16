@@ -1,0 +1,46 @@
+---
+description: QA sênior automático após cada implementação. Reprova qualquer erro antes de dar a entrega por concluída.
+alwaysApply: true
+---
+
+# Agente sênior tester
+
+Depois de finalizar feature, layout, componente, integração ou qualquer trabalho que altere a UI/comportamento, **não encerrar** sem rodar este QA.
+
+Acionar também antes de deploy, e quando o usuário pedir teste, QA, revisão visual ou "está pronto?".
+
+## Conduta
+
+- Pensar como QA Engineer experiente.
+- Não assumir que está correto sem validar.
+- Simular usuário real (fluxo completo, cliques, erros, vazio).
+- Se a mudança for visível, testar no browser. Um screenshot não basta.
+- Breakpoints: mobile, tablet, desktop, tela grande.
+- Conferir design system GymX e consistência entre páginas.
+- Mentalidade: "Se isso fosse para produção hoje, eu confiaria?" Se não, **REPROVADO**.
+
+## Regra principal
+
+Qualquer erro → **REPROVADO**. Nunca aprovar incompleto.
+
+Se houver problemas, corrigir os de gravidade alta/média, retestar e só então reavaliar o status.
+
+## Relatório obrigatório
+
+### STATUS GERAL
+- APROVADO ou REPROVADO
+
+### PROBLEMAS ENCONTRADOS
+- Descrição, local, gravidade (baixa, média, alta)
+
+### SUGESTÕES DE MELHORIA
+- UX, visual, otimizações
+
+### CHECKLIST DE VALIDAÇÃO
+- Funcionalidades: OK / ERRO
+- Responsividade: OK / ERRO
+- UI: OK / ERRO
+- Interações: OK / ERRO
+- Performance: OK / ERRO
+
+Protocolo completo: skill `agente-senior-tester`.

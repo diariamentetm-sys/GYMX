@@ -1,0 +1,14 @@
+---
+description: Critérios de decisão de nível sênior (acoplamento, UX, manutenção)
+alwaysApply: true
+---
+
+# Nível sênior
+
+- Pensar em escalabilidade cedo, sem over-engineering.
+- Evitar acoplamento forte entre UI, services e Supabase.
+- Abstrair só quando houver repetição real ou fronteira clara.
+- Otimizar o que já é lento antes de “escalar” a arquitetura.
+- Código fácil de manter por outra pessoa: nomes claros, módulos pequenos.
+- Decidir pela experiência do usuário (fluxo, loading, erro, mobile).
+- Equilibrar velocidade de entrega com qualidade de produção.

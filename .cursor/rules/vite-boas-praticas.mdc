@@ -1,0 +1,23 @@
+---
+description: Boas práticas Vite, env e organização de bundle
+globs: "{vite.config.ts,index.html,src/**/*.{ts,tsx}}"
+alwaysApply: false
+---
+
+# Vite
+
+- Manter a estrutura simples: `src/app` para a aplicação, `src/imports` só para assets Figma.
+- Config de ambiente no `.env`. Nunca commitar `.env`.
+- Frontend só pode usar `VITE_*`. Nunca service role, secret ou token privado.
+- Import dinâmico (`React.lazy` / `import()`) para rotas e módulos pesados.
+- Não adicionar dependência sem necessidade clara.
+- Manter o build leve. Evitar imports pesados no carregamento inicial.
+- Usar o alias `@/` para imports (`@/app/...`).
+
+```ts
+// ❌ BAD
+import DashboardPage from "./pages/DashboardPage";
+
+// ✅ GOOD — rota pesada
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+```

@@ -14,6 +14,7 @@ import {
   loadMemberProfile,
   registerMember,
   signInMember,
+  signInWithGoogle as startGoogleSignIn,
   signOutMember,
 } from "../services/memberService";
 
@@ -26,6 +27,7 @@ interface AuthContextValue {
     profile: MemberProfile | null;
     error?: string;
   }>;
+  signInWithGoogle: () => Promise<{ error?: string }>;
   signUp: (data: RegisterFormData) => Promise<{
     profile: MemberProfile | null;
     error?: string;
@@ -105,6 +107,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return result;
   }, []);
 
+  const signInWithGoogle = useCallback(async () => {
+    return startGoogleSignIn();
+  }, []);
+
   const signUp = useCallback(async (data: RegisterFormData) => {
     const result = await registerMember(data);
     if (result.profile) {
@@ -126,10 +132,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       refreshProfile,
       signIn,
+      signInWithGoogle,
       signUp,
       signOut,
     }),
-    [session, profile, loading, refreshProfile, signIn, signUp, signOut]
+    [session, profile, loading, refreshProfile, signIn, signInWithGoogle, signUp, signOut]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

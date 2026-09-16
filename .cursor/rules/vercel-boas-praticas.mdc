@@ -1,0 +1,14 @@
+---
+description: Deploy, env e performance na Vercel
+alwaysApply: true
+---
+
+# Vercel
+
+- O `vite build` precisa passar sem erros antes de publicar.
+- Variáveis de ambiente só no painel da Vercel (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`). Nunca no código.
+- Não expor secrets no bundle. Frontend não recebe service role.
+- Performance: lazy loading, imagens otimizadas, menos requests no first load.
+- Usar preview deployments para validar antes de produção.
+- SEO básico: `title` e meta description em `index.html`.
+- Depois do deploy, conferir logs de erro se algo falhar em runtime.

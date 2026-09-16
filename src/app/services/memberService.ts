@@ -271,6 +271,20 @@ export async function registerMember(
   return { profile };
 }
 
+export async function signInWithGoogle(): Promise<{ error?: string }> {
+  const redirectTo = `${window.location.origin}/login`;
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo },
+  });
+
+  if (error) {
+    return { error: "Não foi possível iniciar o login com Google." };
+  }
+
+  return {};
+}
+
 export async function signInMember(
   email: string,
   password: string

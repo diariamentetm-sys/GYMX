@@ -1,0 +1,11 @@
+---
+description: Ordem obrigatória para Google OAuth no Supabase. Acionar ao implementar ou corrigir login com Google.
+globs: "{src/app/pages/LoginPage.tsx,src/app/pages/RegisterPage.tsx,src/app/services/memberService.ts,src/app/contexts/AuthContext.tsx,src/app/components/auth/**}"
+alwaysApply: false
+---
+
+# Google OAuth
+
+Seguir a skill `google-oauth-supabase`. Ordem: Provider Google no Supabase → copiar callback → Google Cloud (redirect URI = callback) → colar Client ID/Secret → URL Configuration com `/**`.
+
+No código: só `signInWithOAuth({ provider: "google" })` com `redirectTo` em `{origin}/login`. Nunca hardcodar Client Secret. Callback oficial: `https://brgucbuhwaxbwphkoogh.supabase.co/auth/v1/callback`.

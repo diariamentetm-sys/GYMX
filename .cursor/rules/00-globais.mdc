@@ -1,0 +1,17 @@
+---
+description: Padrões globais de código limpo, modularidade e segurança
+alwaysApply: true
+---
+
+# Regras globais
+
+- Escrever código limpo, legível e modular.
+- Evitar duplicação (DRY). Extrair o que se repetir.
+- Priorizar composição em vez de herança.
+- Funções e componentes pequenos, com responsabilidade clara e reutilizáveis.
+- Nomes descritivos. Sem abreviações confusas.
+- Separar lógica de negócio da UI (`services`, `hooks`, `utils`).
+- Evitar comentários óbvios. O código deve se explicar.
+- Sempre tratar erros: `try/catch`, retorno de erro ou fallback de UI.
+- UI mobile-first e responsiva.
+- Nunca hardcodar tokens, keys ou URLs privadas. Usar `.env` e `import.meta.env`.

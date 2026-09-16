@@ -1,0 +1,11 @@
+---
+description: Qualidade de produção e decisões técnicas explícitas
+alwaysApply: true
+---
+
+# Avançado
+
+- Gerar código production-ready, não rascunho ou boilerplate fraco.
+- Preferir soluções modernas e performáticas já usadas no stack (React, Vite, Tailwind, Supabase).
+- Evitar atalhos genéricos que quebrem o design system ou as regras de negócio.
+- Quando a decisão for complexa (RPC vs client, estado global, schema), explicar o porquê em 1–3 frases.
