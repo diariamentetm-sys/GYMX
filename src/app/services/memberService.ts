@@ -216,7 +216,7 @@ export async function checkRegistrationAvailable(
 
 export async function registerMember(
   data: RegisterFormData
-): Promise<{ profile: MemberProfile | null; error?: string }> {
+): Promise<{ profile: MemberProfile | null; sessionCreated?: boolean; error?: string }> {
   const availability = await checkRegistrationAvailable(data.email, data.cpf);
 
   if (!availability.emailAvailable) {
@@ -239,6 +239,7 @@ export async function registerMember(
     email: data.email.trim().toLowerCase(),
     password: data.password,
     options: {
+      emailRedirectTo: getMemberVerificationUrl(),
       data: {
         full_name: data.fullName.trim(),
         cpf: stripCpf(data.cpf),
@@ -268,7 +269,7 @@ export async function registerMember(
 
   const profile = await loadMemberProfile(authData.user.id);
 
-  return { profile };
+  return { profile, sessionCreated: Boolean(authData.session) };
 }
 
 export async function signInWithGoogle(): Promise<{ error?: string }> {
@@ -295,6 +296,14 @@ export async function signInMember(
   });
 
   if (error) {
+    const message = error.message.toLowerCase();
+    if (message.includes("not confirmed") || error.code === "email_not_confirmed") {
+      return {
+        profile: null,
+        error:
+          "A conta existe, mas o e-mail ainda não foi liberado no Auth. Tente de novo em instantes ou fale com a recepção.",
+      };
+    }
     return { profile: null, error: "E-mail ou senha incorretos." };
   }
 
@@ -698,6 +707,10 @@ export async function requestAccountDeletion(userId: string): Promise<void> {
     .from("member_profiles")
     .update({ status: "encerramento_solicitado" })
     .eq("id", userId);
+}
+
+export function getMemberVerificationUrl(): string {
+  return `${window.location.origin}/cadastro/verificacao`;
 }
 
 export function getPostLoginRedirect(profile: MemberProfile): string {

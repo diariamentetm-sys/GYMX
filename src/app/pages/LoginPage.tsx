@@ -3,7 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, LogOut, Shield } from "lucide-react";
 import { FormInput } from "../components/FormInput";
-import { GoogleAuthButton } from "../components/auth/GoogleAuthButton";
+import { GoogleAuthButton, isGoogleAuthEnabled } from "../components/auth/GoogleAuthButton";
 import { getPostLoginRedirect } from "../services/memberService";
 import { useAuth } from "../contexts/AuthContext";
 import { scrollToPageTop } from "../utils/scroll";
@@ -15,6 +15,7 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const justCreated = new URLSearchParams(window.location.search).get("criado") === "1";
 
   useEffect(() => {
     if (!loading && session && profile) {
@@ -169,6 +170,12 @@ export function LoginPage() {
             <p className="text-neutral-300 text-base leading-relaxed">
               Acesse seu painel de treinos e acompanhamento
             </p>
+            {justCreated ? (
+              <p className="mt-4 text-yellow-400 text-sm">
+                Conta criada. Entre com o mesmo e-mail e senha do cadastro. Depois
+                aparece o código de 6 dígitos.
+              </p>
+            ) : null}
           </motion.div>
 
           <motion.form
@@ -241,18 +248,21 @@ export function LoginPage() {
             </p>
           )}
 
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-neutral-800" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-neutral-950 text-neutral-500 uppercase tracking-wider text-xs font-semibold">
-                ou
-              </span>
-            </div>
-          </div>
-
-          <GoogleAuthButton disabled={isLoading || loading} />
+          {isGoogleAuthEnabled ? (
+            <>
+              <div className="relative my-8">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-neutral-800" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-neutral-950 text-neutral-500 uppercase tracking-wider text-xs font-semibold">
+                    ou
+                  </span>
+                </div>
+              </div>
+              <GoogleAuthButton disabled={isLoading || loading} />
+            </>
+          ) : null}
 
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">

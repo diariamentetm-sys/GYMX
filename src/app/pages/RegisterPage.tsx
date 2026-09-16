@@ -3,7 +3,7 @@ import { FormEvent, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, UserPlus } from "lucide-react";
 import { FormInput } from "../components/FormInput";
-import { GoogleAuthButton } from "../components/auth/GoogleAuthButton";
+import { GoogleAuthButton, isGoogleAuthEnabled } from "../components/auth/GoogleAuthButton";
 import { formatCpf, isMinor, isValidCpf, stripCpf } from "../utils/cpf";
 import { checkRegistrationAvailable } from "../services/memberService";
 import { useAuth } from "../contexts/AuthContext";
@@ -115,7 +115,12 @@ export function RegisterPage() {
       return;
     }
 
-    navigate("/cadastro/verificacao");
+    if (result.sessionCreated) {
+      navigate("/cadastro/verificacao");
+      return;
+    }
+
+    navigate("/login?criado=1");
   };
 
   return (
@@ -146,23 +151,26 @@ export function RegisterPage() {
             Criar <span className="text-yellow-400">conta</span>
           </h1>
           <p className="text-neutral-400 text-sm">
-            Conta criada no Supabase Auth com status &quot;pendente de verificação&quot;.
+            Preencha os dados e clique em continuar. Na próxima tela você confirma um
+            código de 6 dígitos — ainda não é o login do Google.
           </p>
         </motion.div>
 
-        <div className="mb-8 space-y-6">
-          <GoogleAuthButton disabled={isLoading} />
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-neutral-800" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-neutral-950 text-neutral-500 uppercase tracking-wider text-xs font-semibold">
-                ou cadastre com e-mail
-              </span>
+        {isGoogleAuthEnabled ? (
+          <div className="mb-8 space-y-6">
+            <GoogleAuthButton disabled={isLoading} />
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-neutral-800" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-neutral-950 text-neutral-500 uppercase tracking-wider text-xs font-semibold">
+                  ou cadastre com e-mail
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
 
         <motion.form
           initial={{ opacity: 0, y: 20 }}

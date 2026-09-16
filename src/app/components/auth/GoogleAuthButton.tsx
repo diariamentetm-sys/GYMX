@@ -2,6 +2,9 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { useAuth } from "../../contexts/AuthContext";
 
+export const isGoogleAuthEnabled =
+  import.meta.env.VITE_ENABLE_GOOGLE_AUTH === "true";
+
 interface GoogleAuthButtonProps {
   disabled?: boolean;
 }

@@ -24,7 +24,16 @@ export function VerifyAccountPage() {
     if (loading) return;
 
     if (!session || !profile) {
-      navigate("/cadastro", { replace: true });
+      const hash = window.location.hash;
+      const search = window.location.search;
+      const waitingAuthCallback =
+        hash.includes("access_token") ||
+        new URLSearchParams(search).has("code") ||
+        new URLSearchParams(search).has("token_hash");
+
+      if (!waitingAuthCallback) {
+        navigate("/login", { replace: true });
+      }
       return;
     }
 
@@ -82,9 +91,7 @@ export function VerifyAccountPage() {
     }
 
     setDevCode(result.code ?? "");
-    setResendMessage(
-      "Novo código registrado no Supabase. Válido por 15 minutos."
-    );
+    setResendMessage("Novo código gerado. Válido por 15 minutos.");
     await refreshProfile();
   };
 
@@ -96,9 +103,10 @@ export function VerifyAccountPage() {
     : 0;
 
   const displayCode = devCode || profile.verificationCode;
+  const studentName = profile.fullName.trim() || profile.email;
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-neutral-950 flex items-center justify-center px-6 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -108,26 +116,27 @@ export function VerifyAccountPage() {
           <ShieldCheck className="text-yellow-400" size={32} />
         </div>
 
-        <h1 className="font-display text-4xl font-black uppercase text-white text-center mb-3">
-          Verificar <span className="text-yellow-400">conta</span>
+        <h1 className="font-display text-4xl font-black uppercase text-white text-center mb-3 leading-none">
+          Autorize o cadastro de{" "}
+          <span className="text-yellow-400">{studentName}</span>
         </h1>
         <p className="text-neutral-400 text-sm text-center mb-8">
-          Código de verificação para{" "}
-          <strong className="text-white">{profile.email}</strong>. Confirme em até
-          15 minutos.
+          Confirme o código para liberar a conta de{" "}
+          <strong className="text-white">{profile.email}</strong>. Válido por 15
+          minutos.
         </p>
 
         {displayCode && (
-          <div className="bg-neutral-900 border border-neutral-700 rounded-md p-4 mb-6 text-sm">
-            <div className="flex items-center gap-2 text-neutral-400 mb-2">
+          <div className="bg-neutral-900 border border-yellow-400/30 rounded-md p-5 mb-6">
+            <div className="flex items-center gap-2 text-yellow-400 mb-3 text-xs font-semibold uppercase tracking-wider">
               <Mail size={16} />
-              <span>Código (Supabase — ambiente dev)</span>
+              <span>Código para autorizar o cadastro</span>
             </div>
-            <p className="text-yellow-400 font-mono text-lg tracking-widest">
+            <p className="text-white font-mono text-3xl tracking-[0.35em] text-center">
               {displayCode}
             </p>
             {minutesLeft > 0 && (
-              <p className="text-neutral-500 text-xs mt-2">
+              <p className="text-neutral-500 text-xs mt-3 text-center">
                 Expira em ~{minutesLeft} min
               </p>
             )}
@@ -153,7 +162,7 @@ export function VerifyAccountPage() {
             disabled={isLoading || code.length < 6}
             className="w-full bg-yellow-400 text-yellow-900 py-4 rounded-md font-bold uppercase text-sm tracking-wider hover:bg-yellow-300 transition-colors disabled:opacity-50"
           >
-            {isLoading ? "Verificando..." : "Confirmar código"}
+            {isLoading ? "Verificando..." : "Autorizar cadastro"}
           </button>
         </form>
 

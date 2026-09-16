@@ -30,6 +30,7 @@ interface AuthContextValue {
   signInWithGoogle: () => Promise<{ error?: string }>;
   signUp: (data: RegisterFormData) => Promise<{
     profile: MemberProfile | null;
+    sessionCreated?: boolean;
     error?: string;
   }>;
   signOut: () => Promise<void>;

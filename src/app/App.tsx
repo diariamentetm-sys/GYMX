@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import { AuthProvider } from "./contexts/AuthContext";
+import { AuthFlowRedirect } from "./components/auth/AuthFlowRedirect";
 import { AppErrorBoundary } from "./components/AppErrorBoundary";
 import { isSupabaseConfigured } from "./lib/supabase";
 import { HomePage } from "./pages/HomePage";
@@ -45,6 +46,7 @@ export default function App() {
     <AppErrorBoundary>
     <AuthProvider>
       <BrowserRouter>
+      <AuthFlowRedirect />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
