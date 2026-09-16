@@ -22,6 +22,7 @@ interface AuthContextValue {
   session: Session | null;
   profile: MemberProfile | null;
   loading: boolean;
+  isPasswordRecovery: boolean;
   refreshProfile: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<{
     profile: MemberProfile | null;
@@ -34,6 +35,7 @@ interface AuthContextValue {
     error?: string;
   }>;
   signOut: () => Promise<void>;
+  clearPasswordRecovery: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -42,6 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<MemberProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isPasswordRecovery, setIsPasswordRecovery] = useState(false);
 
   const refreshProfile = useCallback(async () => {
     const {
@@ -81,8 +84,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
+    } = supabase.auth.onAuthStateChange(async (event, nextSession) => {
       setSession(nextSession);
+
+      if (event === "PASSWORD_RECOVERY") {
+        setIsPasswordRecovery(true);
+      }
+
+      if (event === "SIGNED_OUT") {
+        setIsPasswordRecovery(false);
+      }
 
       if (nextSession?.user) {
         const memberProfile = await loadMemberProfile(nextSession.user.id);
@@ -124,6 +135,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signOutMember();
     setProfile(null);
     setSession(null);
+    setIsPasswordRecovery(false);
+  }, []);
+
+  const clearPasswordRecovery = useCallback(() => {
+    setIsPasswordRecovery(false);
   }, []);
 
   const value = useMemo(
@@ -131,13 +147,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       session,
       profile,
       loading,
+      isPasswordRecovery,
       refreshProfile,
       signIn,
       signInWithGoogle,
       signUp,
       signOut,
+      clearPasswordRecovery,
     }),
-    [session, profile, loading, refreshProfile, signIn, signInWithGoogle, signUp, signOut]
+    [session, profile, loading, isPasswordRecovery, refreshProfile, signIn, signInWithGoogle, signUp, signOut, clearPasswordRecovery]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -272,6 +272,39 @@ export async function registerMember(
   return { profile, sessionCreated: Boolean(authData.session) };
 }
 
+export async function requestPasswordReset(
+  email: string
+): Promise<{ error?: string }> {
+  const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
+    redirectTo: getPasswordResetUrl(),
+  });
+
+  if (error) {
+    return { error: "Não foi possível enviar o e-mail. Tente novamente em instantes." };
+  }
+
+  return {};
+}
+
+export async function updateMemberPassword(
+  password: string
+): Promise<{ error?: string }> {
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    const message = error.message.toLowerCase();
+    if (message.includes("same") || message.includes("diferente")) {
+      return { error: "A nova senha deve ser diferente da senha atual." };
+    }
+    if (message.includes("6") || message.includes("weak") || message.includes("least")) {
+      return { error: "A senha deve ter no mínimo 6 caracteres." };
+    }
+    return { error: "Não foi possível atualizar a senha. Solicite um novo link." };
+  }
+
+  return {};
+}
+
 export async function signInWithGoogle(): Promise<{ error?: string }> {
   const redirectTo = `${window.location.origin}/login`;
   const { error } = await supabase.auth.signInWithOAuth({
@@ -711,6 +744,10 @@ export async function requestAccountDeletion(userId: string): Promise<void> {
 
 export function getMemberVerificationUrl(): string {
   return `${window.location.origin}/cadastro/verificacao`;
+}
+
+export function getPasswordResetUrl(): string {
+  return `${window.location.origin}/redefinir-senha`;
 }
 
 export function getPostLoginRedirect(profile: MemberProfile): string {

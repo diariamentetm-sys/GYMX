@@ -4,10 +4,17 @@ import { useAuth } from "../../contexts/AuthContext";
 import { getPostLoginRedirect } from "../../services/memberService";
 
 const AUTH_HANDOFF_PATHS = new Set(["/"]);
+const PASSWORD_RESET_PATHS = new Set(["/recuperar-senha", "/redefinir-senha"]);
+
+function queryAndHash(search: string, hash: string) {
+  return {
+    params: new URLSearchParams(search),
+    hashParams: new URLSearchParams(hash.replace(/^#/, "")),
+  };
+}
 
 function hasAuthCallback(search: string, hash: string) {
-  const params = new URLSearchParams(search);
-  const hashParams = new URLSearchParams(hash.replace(/^#/, ""));
+  const { params, hashParams } = queryAndHash(search, hash);
   return (
     params.has("code") ||
     params.has("token_hash") ||
@@ -17,12 +24,24 @@ function hasAuthCallback(search: string, hash: string) {
   );
 }
 
+function isRecoveryCallback(search: string, hash: string) {
+  const { params, hashParams } = queryAndHash(search, hash);
+  return params.get("type") === "recovery" || hashParams.get("type") === "recovery";
+}
+
 export function AuthFlowRedirect() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { session, profile, loading } = useAuth();
+  const { session, profile, loading, isPasswordRecovery } = useAuth();
 
   useEffect(() => {
+    if (PASSWORD_RESET_PATHS.has(location.pathname)) return;
+
+    if (isRecoveryCallback(location.search, location.hash) || isPasswordRecovery) {
+      navigate(`/redefinir-senha${location.search}${location.hash}`, { replace: true });
+      return;
+    }
+
     if (loading || !session || !profile) return;
     if (
       location.pathname.startsWith("/dashboard") ||
@@ -45,6 +64,7 @@ export function AuthFlowRedirect() {
     loading,
     session,
     profile,
+    isPasswordRecovery,
     location.pathname,
     location.search,
     location.hash,

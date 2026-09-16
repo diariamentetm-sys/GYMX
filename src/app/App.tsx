@@ -7,6 +7,8 @@ import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { VerifyAccountPage } from "./pages/VerifyAccountPage";
+import { RecoverPasswordPage } from "./pages/RecoverPasswordPage";
+import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import MemberHomePage from "./pages/member/MemberHomePage";
 import MemberWorkoutPage from "./pages/member/MemberWorkoutPage";
 import MemberCheckinPage from "./pages/member/MemberCheckinPage";
@@ -52,6 +54,8 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cadastro" element={<RegisterPage />} />
         <Route path="/cadastro/verificacao" element={<VerifyAccountPage />} />
+        <Route path="/recuperar-senha" element={<RecoverPasswordPage />} />
+        <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
         <Route path="/portal" element={<MemberHomePage />} />
         <Route path="/portal/onboarding" element={<OnboardingPage />} />
         <Route path="/portal/termos" element={<TermsReacceptPage />} />

@@ -290,9 +290,14 @@ export function RegisterPage() {
           {(errors.email?.includes("Recupere") || errors.cpf?.includes("Recupere")) && (
             <div className="bg-neutral-800 border border-neutral-700 rounded-md p-4 text-sm">
               <p className="text-neutral-300 mb-2">Já possui conta?</p>
-              <Link to="/login" className="text-yellow-400 hover:underline font-semibold">
-                Recuperar senha / Fazer login
-              </Link>
+              <div className="flex flex-wrap gap-3">
+                <Link to="/login" className="text-yellow-400 hover:underline font-semibold">
+                  Fazer login
+                </Link>
+                <Link to="/recuperar-senha" className="text-yellow-400 hover:underline font-semibold">
+                  Recuperar senha
+                </Link>
+              </div>
             </div>
           )}
 

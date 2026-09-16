@@ -10,18 +10,23 @@ import { scrollToPageTop } from "../utils/scroll";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { session, profile, loading, signIn, signOut } = useAuth();
+  const { session, profile, loading, signIn, signOut, isPasswordRecovery } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const justCreated = new URLSearchParams(window.location.search).get("criado") === "1";
+  const passwordUpdated = new URLSearchParams(window.location.search).get("senha") === "ok";
 
   useEffect(() => {
     if (!loading && session && profile) {
+      if (isPasswordRecovery) {
+        navigate("/redefinir-senha", { replace: true });
+        return;
+      }
       navigate(getPostLoginRedirect(profile), { replace: true });
     }
-  }, [loading, session, profile, navigate]);
+  }, [loading, session, profile, navigate, isPasswordRecovery]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -176,6 +181,11 @@ export function LoginPage() {
                 aparece o código de 6 dígitos.
               </p>
             ) : null}
+            {passwordUpdated ? (
+              <p className="mt-4 text-yellow-400 text-sm">
+                Senha atualizada. Entre com o e-mail e a nova senha.
+              </p>
+            ) : null}
           </motion.div>
 
           <motion.form
@@ -208,12 +218,12 @@ export function LoginPage() {
             />
 
             <div className="flex justify-end">
-              <a
-                href="/recuperar-senha"
+              <Link
+                to="/recuperar-senha"
                 className="text-sm text-neutral-400 hover:text-yellow-400 transition-colors font-medium"
               >
                 Esqueci minha senha
-              </a>
+              </Link>
             </div>
 
             <motion.button
