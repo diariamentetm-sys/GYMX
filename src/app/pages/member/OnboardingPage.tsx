@@ -126,7 +126,7 @@ export function OnboardingPage() {
             Onboarding <span className="text-yellow-400">GYMX</span>
           </h1>
           <p className="text-neutral-400 text-sm">
-            Dados persistidos no Supabase com RLS ativo.
+            Leia os documentos e registre o aceite. Versão vigente dos termos da GYMX.
           </p>
 
           <div className="flex justify-center gap-2 mt-6">

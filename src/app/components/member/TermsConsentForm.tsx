@@ -1,50 +1,73 @@
 import { Shield, AlertTriangle } from "lucide-react";
 import {
+  BIOMETRIC_CONSENT,
   BIOMETRIC_CONSENT_SUMMARY,
+  HEALTH_CONSENT,
   HEALTH_CONSENT_SUMMARY,
+  PRIVACY_POLICY,
   PRIVACY_POLICY_SUMMARY,
+  TERMS_OF_USE,
   TERMS_OF_USE_SUMMARY,
 } from "../../constants/terms";
 
-interface ConsentCheckboxProps {
+interface ConsentDocumentProps {
   id: string;
   label: string;
-  description: string;
+  summary: string;
+  body: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
   required?: boolean;
 }
 
-function ConsentCheckbox({
+function ConsentDocument({
   id,
   label,
-  description,
+  summary,
+  body,
   checked,
   onChange,
   required,
-}: ConsentCheckboxProps) {
+}: ConsentDocumentProps) {
   return (
-    <label
-      htmlFor={id}
-      className="flex items-start gap-3 bg-neutral-900 border border-neutral-700 rounded-md p-4 cursor-pointer hover:border-neutral-600 transition-colors"
-    >
-      <input
-        id={id}
-        type="checkbox"
-        checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
-        className="mt-1 w-4 h-4 accent-yellow-400 shrink-0"
-      />
-      <div>
+    <div className="bg-neutral-900 border border-neutral-700 rounded-md overflow-hidden">
+      <div className="px-4 pt-4 pb-3 border-b border-neutral-800">
         <p className="text-white text-sm font-semibold">
           {label}
-          {required && <span className="text-orange-500 ml-1">*</span>}
+          {required ? <span className="text-orange-500 ml-1">*</span> : (
+            <span className="text-neutral-500 font-medium ml-2 text-xs uppercase tracking-wider">
+              Opcional
+            </span>
+          )}
         </p>
-        <p className="text-neutral-400 text-xs mt-1 leading-relaxed">
-          {description}
-        </p>
+        <p className="text-neutral-400 text-xs mt-1 leading-relaxed">{summary}</p>
       </div>
-    </label>
+
+      <div
+        className="max-h-56 overflow-y-auto px-4 py-4 text-neutral-300 text-xs leading-relaxed whitespace-pre-wrap scrollbar-thin"
+        tabIndex={0}
+        role="region"
+        aria-label={label}
+      >
+        {body.trim()}
+      </div>
+
+      <label
+        htmlFor={id}
+        className="flex items-start gap-3 px-4 py-3 border-t border-neutral-800 cursor-pointer hover:bg-neutral-800/40 transition-colors"
+      >
+        <input
+          id={id}
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => onChange(e.target.checked)}
+          className="mt-0.5 w-4 h-4 accent-yellow-400 shrink-0"
+        />
+        <span className="text-neutral-200 text-xs leading-relaxed">
+          Li o documento completo acima e aceito seus termos.
+        </span>
+      </label>
+    </div>
   );
 }
 
@@ -85,29 +108,32 @@ export function TermsConsentForm({
         </h3>
       </div>
 
-      <ConsentCheckbox
+      <ConsentDocument
         id="terms"
-        label="Li e aceito os Termos de Uso"
-        description={TERMS_OF_USE_SUMMARY}
+        label="Termos de Uso"
+        summary={TERMS_OF_USE_SUMMARY}
+        body={TERMS_OF_USE}
         checked={termsAccepted}
         onChange={onTermsChange}
         required
       />
 
-      <ConsentCheckbox
+      <ConsentDocument
         id="privacy"
-        label="Li e aceito a Política de Privacidade"
-        description={PRIVACY_POLICY_SUMMARY}
+        label="Política de Privacidade"
+        summary={PRIVACY_POLICY_SUMMARY}
+        body={PRIVACY_POLICY}
         checked={privacyAccepted}
         onChange={onPrivacyChange}
         required
       />
 
       {showHealth && (
-        <ConsentCheckbox
+        <ConsentDocument
           id="health"
           label="Consentimento específico — dados de saúde (PAR-Q)"
-          description={HEALTH_CONSENT_SUMMARY}
+          summary={HEALTH_CONSENT_SUMMARY}
+          body={HEALTH_CONSENT}
           checked={healthConsent}
           onChange={onHealthChange}
           required
@@ -115,10 +141,11 @@ export function TermsConsentForm({
       )}
 
       {showBiometric && (
-        <ConsentCheckbox
+        <ConsentDocument
           id="biometric"
-          label="Consentimento opcional — biometria facial (check-in)"
-          description={BIOMETRIC_CONSENT_SUMMARY}
+          label="Consentimento — biometria facial (check-in)"
+          summary={BIOMETRIC_CONSENT_SUMMARY}
+          body={BIOMETRIC_CONSENT}
           checked={biometricConsent}
           onChange={onBiometricChange}
         />
@@ -128,8 +155,8 @@ export function TermsConsentForm({
         <div className="flex items-start gap-2 text-orange-400 text-xs bg-orange-500/10 border border-orange-500/20 rounded-md p-3">
           <AlertTriangle size={14} className="mt-0.5 shrink-0" />
           <p>
-            Todos os consentimentos obrigatórios devem ser aceitos explicitamente
-            (checkboxes não vêm pré-marcados) para concluir o cadastro.
+            Role cada documento, leia o texto completo e marque o aceite. Os
+            obrigatórios não vêm pré-marcados.
           </p>
         </div>
       )}
