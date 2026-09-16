@@ -441,8 +441,8 @@ function BlockedState({
             <>
               {parQStatus === "encaminhar_avaliacao" && (
                 <p className="text-neutral-300 text-sm mb-4">
-                  PAR-Q com restrição de saúde. Prescrição automática bloqueada até
-                  avaliação profissional.
+                  PAR-Q com restrição de saúde. O treino fica bloqueado até a equipe
+                  aprovar a avaliação no painel de alunos.
                 </p>
               )}
               {parQStatus === "expirado" && (
@@ -464,9 +464,11 @@ function BlockedState({
           >
             {type === "plan"
               ? "Contratar plano"
-              : parQStatus === "nao_preenchido"
-                ? "Completar onboarding"
-                : "Atualizar PAR-Q"}
+              : parQStatus === "encaminhar_avaliacao"
+                ? "Ver meu perfil"
+                : parQStatus === "nao_preenchido"
+                  ? "Completar onboarding"
+                  : "Atualizar PAR-Q"}
           </button>
         </div>
       </div>

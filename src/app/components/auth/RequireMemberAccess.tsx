@@ -16,13 +16,18 @@ export function RequireMemberAccess({
   requireParQ = false,
 }: RequireMemberAccessProps) {
   const navigate = useNavigate();
-  const { session, profile, loading } = useAuth();
+  const { session, profile, staffProfile, loading } = useAuth();
 
   useEffect(() => {
     if (loading) return;
 
     if (!session) {
       navigate("/login", { replace: true });
+      return;
+    }
+
+    if (staffProfile) {
+      navigate("/dashboard", { replace: true });
       return;
     }
 
@@ -52,7 +57,7 @@ export function RequireMemberAccess({
     if (requireParQ && !canAccessWorkoutPrescription(profile.parQStatus)) {
       navigate("/portal/onboarding", { replace: true });
     }
-  }, [loading, session, profile, navigate, requireActive, requireParQ]);
+  }, [loading, session, profile, staffProfile, navigate, requireActive, requireParQ]);
 
   if (loading) {
     return (

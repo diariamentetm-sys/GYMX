@@ -8,7 +8,8 @@ import {
   LogOut,
   Dumbbell
 } from "lucide-react";
-import { clearAuthSession } from "../../utils/auth";
+import { useAuth } from "../../contexts/AuthContext";
+import { getNameInitials, getStaffRoleLabel } from "../../services/staffService";
 
 interface NavItem {
   icon: any;
@@ -20,6 +21,9 @@ interface NavItem {
 export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { staffProfile, signOut } = useAuth();
+  const staffName = staffProfile?.fullName ?? "Equipe GYMX";
+  const staffRole = staffProfile ? getStaffRoleLabel(staffProfile.role) : "Equipe";
 
   const navItems: NavItem[] = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
@@ -29,9 +33,9 @@ export function Sidebar() {
     { icon: Settings, label: "Configurações", path: "/dashboard/config" },
   ];
 
-  const handleLogout = () => {
-    clearAuthSession();
-    navigate("/login");
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/acesso-equipe");
   };
 
   return (
@@ -54,7 +58,7 @@ export function Sidebar() {
           </div>
         </div>
         <p className="text-neutral-500 text-xs uppercase tracking-wider font-semibold">
-          Painel do Membro
+          Administração de alunos
         </p>
       </div>
 
@@ -101,14 +105,16 @@ export function Sidebar() {
         {/* Usuário info */}
         <div className="flex items-center gap-3 px-4 py-3 mb-2">
           <div className="w-10 h-10 bg-neutral-800 rounded-full flex items-center justify-center">
-            <span className="text-yellow-400 font-bold text-sm">RC</span>
+            <span className="text-yellow-400 font-bold text-sm">
+              {getNameInitials(staffName)}
+            </span>
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-white font-semibold text-sm truncate">
-              Rafael Costa
+              {staffName}
             </p>
             <p className="text-neutral-500 text-xs uppercase tracking-wider">
-              Plano Elite
+              {staffRole}
             </p>
           </div>
         </div>

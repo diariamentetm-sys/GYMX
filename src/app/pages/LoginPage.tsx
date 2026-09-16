@@ -10,7 +10,7 @@ import { scrollToPageTop } from "../utils/scroll";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { session, profile, loading, signIn, signOut, isPasswordRecovery } = useAuth();
+  const { session, profile, staffProfile, loading, signIn, signOut, isPasswordRecovery } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
@@ -19,14 +19,19 @@ export function LoginPage() {
   const passwordUpdated = new URLSearchParams(window.location.search).get("senha") === "ok";
 
   useEffect(() => {
-    if (!loading && session && profile) {
-      if (isPasswordRecovery) {
-        navigate("/redefinir-senha", { replace: true });
-        return;
-      }
+    if (loading) return;
+    if (isPasswordRecovery && session) {
+      navigate("/redefinir-senha", { replace: true });
+      return;
+    }
+    if (session && staffProfile) {
+      navigate("/dashboard", { replace: true });
+      return;
+    }
+    if (session && profile) {
       navigate(getPostLoginRedirect(profile), { replace: true });
     }
-  }, [loading, session, profile, navigate, isPasswordRecovery]);
+  }, [loading, session, profile, staffProfile, navigate, isPasswordRecovery]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -83,10 +88,23 @@ export function LoginPage() {
     const result = await signIn(email, password);
     setIsLoading(false);
 
-    if (result.error || !result.profile) {
+    if (result.error) {
       setErrors({
         email: "",
-        password: result.error ?? "E-mail ou senha incorretos.",
+        password: result.error,
+      });
+      return;
+    }
+
+    if (result.staff) {
+      navigate("/dashboard", { replace: true });
+      return;
+    }
+
+    if (!result.profile) {
+      setErrors({
+        email: "",
+        password: "E-mail ou senha incorretos.",
       });
       return;
     }
@@ -303,6 +321,12 @@ export function LoginPage() {
             >
               Conhecer os Planos
             </a>
+            <Link
+              to="/acesso-equipe"
+              className="block w-full text-center py-3 text-neutral-500 text-xs uppercase tracking-wider hover:text-yellow-400 transition-colors"
+            >
+              Acesso da equipe
+            </Link>
           </motion.div>
 
           <div className="md:hidden flex flex-col items-center gap-4 mt-8">

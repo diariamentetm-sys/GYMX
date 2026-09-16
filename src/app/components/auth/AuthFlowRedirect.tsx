@@ -32,7 +32,7 @@ function isRecoveryCallback(search: string, hash: string) {
 export function AuthFlowRedirect() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { session, profile, loading, isPasswordRecovery } = useAuth();
+  const { session, profile, staffProfile, loading, isPasswordRecovery } = useAuth();
 
   useEffect(() => {
     if (PASSWORD_RESET_PATHS.has(location.pathname)) return;
@@ -42,7 +42,29 @@ export function AuthFlowRedirect() {
       return;
     }
 
-    if (loading || !session || !profile) return;
+    if (loading || !session) return;
+
+    if (staffProfile) {
+      const staffStay =
+        location.pathname.startsWith("/dashboard") ||
+        location.pathname.startsWith("/modo-recepcao") ||
+        location.pathname === "/acesso-equipe";
+      if (staffStay) return;
+
+      const shouldHandoffStaff =
+        AUTH_HANDOFF_PATHS.has(location.pathname) ||
+        location.pathname === "/login" ||
+        location.pathname.startsWith("/portal") ||
+        location.pathname.startsWith("/cadastro") ||
+        hasAuthCallback(location.search, location.hash);
+
+      if (shouldHandoffStaff) {
+        navigate("/dashboard", { replace: true });
+      }
+      return;
+    }
+
+    if (!profile) return;
     if (
       location.pathname.startsWith("/dashboard") ||
       location.pathname.startsWith("/modo-recepcao")
@@ -64,6 +86,7 @@ export function AuthFlowRedirect() {
     loading,
     session,
     profile,
+    staffProfile,
     isPasswordRecovery,
     location.pathname,
     location.search,

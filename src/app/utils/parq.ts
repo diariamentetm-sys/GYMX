@@ -70,5 +70,5 @@ export function getParQStatus(
 }
 
 export function canAccessWorkoutPrescription(parQStatus: ParQStatus): boolean {
-  return parQStatus === "apto";
+  return parQStatus === "apto" || parQStatus === "apto_com_restricao";
 }

@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AuthFlowRedirect } from "./components/auth/AuthFlowRedirect";
+import { RequireStaff } from "./components/auth/RequireStaff";
+import { StaffAccessPage } from "./pages/StaffAccessPage";
 import { AppErrorBoundary } from "./components/AppErrorBoundary";
 import { isSupabaseConfigured } from "./lib/supabase";
 import { HomePage } from "./pages/HomePage";
@@ -64,15 +66,16 @@ export default function App() {
         <Route path="/portal/aulas" element={<MemberClassesPage />} />
         <Route path="/portal/plano" element={<MemberPlanPage />} />
         <Route path="/portal/perfil" element={<MemberProfilePage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/dashboard/alunos" element={<AlunosPage />} />
-        <Route path="/dashboard/alunos/novo" element={<NewStudentPage />} />
-        <Route path="/dashboard/alunos/:id" element={<StudentDetailPage />} />
-        <Route path="/dashboard/alunos/:id/editar" element={<EditStudentPage />} />
-        <Route path="/dashboard/checkins" element={<CheckinsPage />} />
-        <Route path="/dashboard/treinos" element={<TreinosPage />} />
-        <Route path="/dashboard/config" element={<ConfiguracoesPage />} />
-        <Route path="/modo-recepcao" element={<ModoRecepcaoPage />} />
+        <Route path="/acesso-equipe" element={<StaffAccessPage />} />
+        <Route path="/dashboard" element={<RequireStaff><DashboardPage /></RequireStaff>} />
+        <Route path="/dashboard/alunos" element={<RequireStaff><AlunosPage /></RequireStaff>} />
+        <Route path="/dashboard/alunos/novo" element={<RequireStaff><NewStudentPage /></RequireStaff>} />
+        <Route path="/dashboard/alunos/:id" element={<RequireStaff><StudentDetailPage /></RequireStaff>} />
+        <Route path="/dashboard/alunos/:id/editar" element={<RequireStaff><EditStudentPage /></RequireStaff>} />
+        <Route path="/dashboard/checkins" element={<RequireStaff><CheckinsPage /></RequireStaff>} />
+        <Route path="/dashboard/treinos" element={<RequireStaff><TreinosPage /></RequireStaff>} />
+        <Route path="/dashboard/config" element={<RequireStaff><ConfiguracoesPage /></RequireStaff>} />
+        <Route path="/modo-recepcao" element={<RequireStaff><ModoRecepcaoPage /></RequireStaff>} />
       </Routes>
       </BrowserRouter>
     </AuthProvider>

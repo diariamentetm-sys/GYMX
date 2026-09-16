@@ -17,12 +17,13 @@ import {
   Radio,
 } from "lucide-react";
 import { useState } from "react";
-import { clearAuthSession } from "../utils/auth";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { signOut } = useAuth();
 
   const isPathActive = (path: string) => {
     if (path === "/dashboard") {
@@ -33,10 +34,10 @@ export default function DashboardPage() {
     );
   };
 
-  const handleLogout = () => {
-    clearAuthSession();
+  const handleLogout = async () => {
+    await signOut();
     setMobileMenuOpen(false);
-    navigate("/login");
+    navigate("/acesso-equipe");
   };
 
   return (
