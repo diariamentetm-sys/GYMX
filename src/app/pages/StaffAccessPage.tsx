@@ -4,12 +4,12 @@ import { motion } from "motion/react";
 import { ArrowLeft, Shield } from "lucide-react";
 import { FormInput } from "../components/FormInput";
 import { useAuth } from "../contexts/AuthContext";
-import { isStaffBootstrapOpen } from "../services/staffService";
+import { isStaffBootstrapOpen, bootstrapStaffProfile } from "../services/staffService";
 import { scrollToPageTop } from "../utils/scroll";
 
 export function StaffAccessPage() {
   const navigate = useNavigate();
-  const { session, profile, staffProfile, loading, signIn, signUpStaff, signOut } = useAuth();
+  const { session, profile, staffProfile, loading, signIn, signUpStaff, signOut, refreshProfile } = useAuth();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [bootstrapOpen, setBootstrapOpen] = useState(false);
   const [fullName, setFullName] = useState("");
@@ -76,8 +76,14 @@ export function StaffAccessPage() {
     }
 
     if ("profile" in result && result.profile) {
-      setError("Esta conta é de aluno. Use outro e-mail para o perfil da equipe.");
-      await signOut();
+      const promoted = await bootstrapStaffProfile();
+      if (promoted.success) {
+        await refreshProfile();
+        navigate("/dashboard", { replace: true });
+        return;
+      }
+      setError(promoted.error ?? "Esta conta é de aluno. Use outro e-mail para o perfil da equipe.");
+      if (!bootstrapOpen) await signOut();
       return;
     }
 
@@ -90,19 +96,41 @@ export function StaffAccessPage() {
         <div className="max-w-md w-full bg-neutral-900 border border-neutral-800 rounded-md p-8 text-center">
           <Shield className="mx-auto text-yellow-400 mb-4" size={36} />
           <h1 className="font-display text-3xl font-black uppercase text-white mb-3">
-            Conta de aluno
+            {bootstrapOpen ? "Virar administrador" : "Conta de aluno"}
           </h1>
           <p className="text-neutral-400 text-sm mb-6">
-            O perfil de administrador é separado da ficha do aluno. Saia desta conta e
-            crie o acesso da equipe com outro e-mail.
+            {bootstrapOpen
+              ? "Esta conta ainda é de aluno. Como ninguém criou o perfil da equipe, você pode promovê-la a administrador e depois navegar a área logada em modo demonstração."
+              : "O perfil de administrador é separado da ficha do aluno. Saia desta conta e entre com o e-mail da equipe."}
           </p>
-          <button
-            type="button"
-            onClick={() => signOut()}
-            className="w-full py-3 bg-yellow-400 text-yellow-900 rounded-md font-bold uppercase text-sm tracking-wider hover:bg-yellow-300"
-          >
-            Sair e criar perfil da equipe
-          </button>
+          {bootstrapOpen ? (
+            <button
+              type="button"
+              onClick={async () => {
+                setSubmitting(true);
+                const promoted = await bootstrapStaffProfile();
+                setSubmitting(false);
+                if (!promoted.success) {
+                  setError(promoted.error ?? "Não foi possível promover a conta.");
+                  return;
+                }
+                await refreshProfile();
+                navigate("/dashboard", { replace: true });
+              }}
+              className="w-full py-3 bg-yellow-400 text-yellow-900 rounded-md font-bold uppercase text-sm tracking-wider hover:bg-yellow-300"
+            >
+              {submitting ? "Aguarde..." : "Tornar esta conta administradora"}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => signOut()}
+              className="w-full py-3 bg-yellow-400 text-yellow-900 rounded-md font-bold uppercase text-sm tracking-wider hover:bg-yellow-300"
+            >
+              Sair e criar perfil da equipe
+            </button>
+          )}
+          {error ? <p className="text-orange-500 text-sm mt-4">{error}</p> : null}
         </div>
       </div>
     );
@@ -150,8 +178,8 @@ export function StaffAccessPage() {
 
           <p className="text-neutral-400 text-sm mb-8">
             {bootstrapOpen
-              ? "Crie o primeiro perfil de administrador. Use um e-mail diferente da conta de aluno."
-              : "Entre com o perfil da equipe para revisar PAR-Q e gerenciar alunos."}
+              ? "Crie o primeiro administrador ou entre com uma conta existente para promovê-la. Depois você navega o portal do aluno em modo demonstração."
+              : "Entre com o perfil da equipe para revisar PAR-Q, gerenciar alunos e abrir a visão demonstrativa."}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">

@@ -44,6 +44,7 @@ interface MemberProfileRow {
   par_q_status: ParQStatus;
   par_q_completed_at: string | null;
   onboarding_completed: boolean;
+  is_demo?: boolean;
   verification_resend_count: number;
   verification_resend_date: string | null;
   verification_code: string | null;
@@ -157,6 +158,7 @@ function mapRowToProfile(
     parQCompletedAt:
       extras?.parQCompletedAt ?? toTimestamp(row.par_q_completed_at),
     onboardingCompleted: row.onboarding_completed,
+    isDemo: Boolean(row.is_demo),
     verificationCode: row.verification_code ?? undefined,
     verificationCodeExpiresAt: toTimestamp(row.verification_code_expires_at),
     verificationResendCount: row.verification_resend_count,
@@ -241,6 +243,7 @@ export async function registerMember(
     options: {
       emailRedirectTo: getMemberVerificationUrl(),
       data: {
+        app: "gymx",
         full_name: data.fullName.trim(),
         cpf: stripCpf(data.cpf),
         birth_date: data.birthDate,

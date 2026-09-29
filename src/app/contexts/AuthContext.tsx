@@ -18,7 +18,7 @@ import {
   signInWithGoogle as startGoogleSignIn,
   signOutMember,
 } from "../services/memberService";
-import { loadStaffProfile, registerStaffAccount } from "../services/staffService";
+import { loadStaffProfile, registerStaffAccount, startStaffMemberDemo } from "../services/staffService";
 
 interface SignInResult {
   profile: MemberProfile | null;
@@ -47,18 +47,17 @@ interface AuthContextValue {
   }) => Promise<{ staff: StaffProfile | null; error?: string }>;
   signOut: () => Promise<void>;
   clearPasswordRecovery: () => void;
+  enterMemberDemo: (mode: "portal" | "onboarding") => Promise<{ error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 async function loadAccount(userId: string) {
-  const staff = await loadStaffProfile(userId);
-  if (staff) {
-    return { staff, profile: null as MemberProfile | null };
-  }
-
-  const profile = await loadMemberProfile(userId);
-  return { staff: null, profile };
+  const [staff, profile] = await Promise.all([
+    loadStaffProfile(userId),
+    loadMemberProfile(userId),
+  ]);
+  return { staff, profile };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -195,6 +194,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsPasswordRecovery(false);
   }, []);
 
+  const enterMemberDemo = useCallback(
+    async (mode: "portal" | "onboarding") => {
+      const result = await startStaffMemberDemo(mode);
+      if (!result.success) {
+        return { error: result.error };
+      }
+      await refreshProfile();
+      return {};
+    },
+    [refreshProfile]
+  );
+
   const clearPasswordRecovery = useCallback(() => {
     setIsPasswordRecovery(false);
   }, []);
@@ -213,6 +224,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signUpStaff,
       signOut,
       clearPasswordRecovery,
+      enterMemberDemo,
     }),
     [
       session,
@@ -227,6 +239,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signUpStaff,
       signOut,
       clearPasswordRecovery,
+      enterMemberDemo,
     ]
   );
 

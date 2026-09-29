@@ -48,13 +48,13 @@ export function AuthFlowRedirect() {
       const staffStay =
         location.pathname.startsWith("/dashboard") ||
         location.pathname.startsWith("/modo-recepcao") ||
-        location.pathname === "/acesso-equipe";
+        location.pathname === "/acesso-equipe" ||
+        (Boolean(profile) && location.pathname.startsWith("/portal"));
       if (staffStay) return;
 
       const shouldHandoffStaff =
         AUTH_HANDOFF_PATHS.has(location.pathname) ||
         location.pathname === "/login" ||
-        location.pathname.startsWith("/portal") ||
         location.pathname.startsWith("/cadastro") ||
         hasAuthCallback(location.search, location.hash);
 

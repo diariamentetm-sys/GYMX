@@ -133,7 +133,7 @@ export default function NewStudentPage() {
     // Simulate save
     setTimeout(() => {
       setIsLoading(false);
-      alert("Cadastro salvo com sucesso!");
+      alert("Demonstração: o formulário foi percorrido. O cadastro real do aluno segue pelo portal.");
       navigate("/dashboard/alunos");
     }, 1500);
   };
@@ -143,6 +143,10 @@ export default function NewStudentPage() {
       <Sidebar />
 
       <main className="flex-1 lg:ml-64">
+        <div className="bg-yellow-400/10 border-b border-yellow-400/30 px-6 py-3 text-yellow-400 text-sm">
+          Cadastro presencial em modo demonstração. Percorra o formulário como na recepção;
+          o salvamento ainda não cria um aluno real no banco.
+        </div>
         {/* Header */}
         <div className="bg-neutral-900 border-b border-neutral-800 px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between max-w-[1200px] mx-auto">

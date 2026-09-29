@@ -18,6 +18,7 @@ export interface StaffMemberListItem {
   parQStatus: ParQStatus;
   parQCompletedAt?: number;
   onboardingCompleted: boolean;
+  isDemo: boolean;
   planName: string;
 }
 

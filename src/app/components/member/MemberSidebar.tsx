@@ -9,6 +9,7 @@ import {
   CreditCard,
   User,
   LogOut,
+  LayoutDashboard,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { fetchMemberSubscription } from "../../services/subscriptionService";
@@ -35,7 +36,7 @@ function getInitialsFromName(name: string) {
 export function MemberSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { profile, session, signOut } = useAuth();
+  const { profile, session, staffProfile, signOut } = useAuth();
   const [planLabel, setPlanLabel] = useState("Sem plano");
 
   useEffect(() => {
@@ -88,7 +89,7 @@ export function MemberSidebar() {
             </h1>
           </div>
           <p className="text-neutral-500 text-xs uppercase tracking-wider font-semibold">
-            Área do Aluno
+            {staffProfile ? "Demonstração do aluno" : "Área do Aluno"}
           </p>
         </button>
       </div>
@@ -134,6 +135,18 @@ export function MemberSidebar() {
             </p>
           </div>
         </div>
+
+        {staffProfile ? (
+          <motion.button
+            onClick={() => navigate("/dashboard")}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-md text-yellow-400 hover:bg-neutral-800 transition-all mb-2"
+          >
+            <LayoutDashboard size={20} strokeWidth={2} />
+            <span className="font-medium text-sm uppercase tracking-wide">Painel admin</span>
+          </motion.button>
+        ) : null}
 
         <motion.button
           onClick={handleLogout}

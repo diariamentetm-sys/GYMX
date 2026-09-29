@@ -8,4 +8,4 @@ alwaysApply: false
 
 Seguir a skill `google-oauth-supabase`. Ordem: Provider Google no Supabase → copiar callback → Google Cloud (redirect URI = callback) → colar Client ID/Secret → URL Configuration com `/**`.
 
-No código: só `signInWithOAuth({ provider: "google" })` com `redirectTo` em `{origin}/login`. Nunca hardcodar Client Secret. Callback oficial: `https://brgucbuhwaxbwphkoogh.supabase.co/auth/v1/callback`.
+No código: só `signInWithOAuth({ provider: "google" })` com `redirectTo` em `{origin}/login`. Nunca hardcodar Client Secret. Callback oficial: `https://sdikmodprrcgwlpeyuav.supabase.co/auth/v1/callback` (projeto GYMX isolado).

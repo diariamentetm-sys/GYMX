@@ -6,7 +6,8 @@ import {
   ClipboardCheck,
   Settings,
   LogOut,
-  Dumbbell
+  Dumbbell,
+  Eye
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { getNameInitials, getStaffRoleLabel } from "../../services/staffService";
@@ -21,7 +22,7 @@ interface NavItem {
 export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { staffProfile, signOut } = useAuth();
+  const { staffProfile, signOut, enterMemberDemo } = useAuth();
   const staffName = staffProfile?.fullName ?? "Equipe GYMX";
   const staffRole = staffProfile ? getStaffRoleLabel(staffProfile.role) : "Equipe";
 
@@ -99,6 +100,23 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      <div className="px-4 pb-2">
+        <motion.button
+          onClick={async () => {
+            const result = await enterMemberDemo("portal");
+            if (!result.error) navigate("/portal");
+          }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-md text-yellow-400 hover:bg-neutral-800 transition-all"
+        >
+          <Eye size={20} strokeWidth={2} />
+          <span className="font-medium text-sm uppercase tracking-wide">
+            Área do aluno
+          </span>
+        </motion.button>
+      </div>
 
       {/* Footer com usuário */}
       <div className="p-4 border-t border-neutral-800">

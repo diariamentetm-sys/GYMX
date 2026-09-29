@@ -3,6 +3,7 @@ import { useState, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { Menu, X, Dumbbell, LogOut } from "lucide-react";
 import { MemberSidebar, memberNavItems } from "./MemberSidebar";
+import { DemoModeBanner } from "./DemoModeBanner";
 import { useAuth } from "../../contexts/AuthContext";
 
 interface MemberLayoutProps {
@@ -14,7 +15,7 @@ interface MemberLayoutProps {
 export function MemberLayout({ title, subtitle, children }: MemberLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { signOut } = useAuth();
+  const { signOut, staffProfile } = useAuth();
 
   const isActive = (path: string) => {
     if (path === "/portal") {
@@ -51,7 +52,7 @@ export function MemberLayout({ title, subtitle, children }: MemberLayoutProps) {
                 GYMX
               </h1>
               <p className="text-neutral-500 text-[10px] uppercase tracking-wider">
-                Área do Aluno
+                {staffProfile ? "Demonstração do aluno" : "Área do Aluno"}
               </p>
             </div>
           </button>
@@ -95,6 +96,18 @@ export function MemberLayout({ title, subtitle, children }: MemberLayoutProps) {
                   </button>
                 );
               })}
+              {staffProfile ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate("/dashboard");
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 text-left px-4 py-3 rounded-md font-semibold text-sm uppercase text-yellow-400 hover:bg-neutral-800"
+                >
+                  Painel admin
+                </button>
+              ) : null}
               <button
                 type="button"
                 onClick={handleLogout}
@@ -109,6 +122,7 @@ export function MemberLayout({ title, subtitle, children }: MemberLayoutProps) {
       </div>
 
       <main className="flex-1 lg:ml-64 pt-20 lg:pt-0">
+        <DemoModeBanner />
         <div className="bg-neutral-900 border-b border-neutral-800 px-6 lg:px-8 py-6">
           <div className="max-w-[1200px] mx-auto">
             <motion.div

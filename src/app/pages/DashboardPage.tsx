@@ -15,6 +15,8 @@ import {
   Menu,
   X,
   Radio,
+  Eye,
+  FileEdit,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
@@ -23,7 +25,9 @@ export default function DashboardPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { signOut } = useAuth();
+  const [demoError, setDemoError] = useState("");
+  const [demoLoading, setDemoLoading] = useState<"portal" | "onboarding" | null>(null);
+  const { signOut, enterMemberDemo } = useAuth();
 
   const isPathActive = (path: string) => {
     if (path === "/dashboard") {
@@ -32,6 +36,18 @@ export default function DashboardPage() {
     return (
       location.pathname === path || location.pathname.startsWith(path + "/")
     );
+  };
+
+  const openDemo = async (mode: "portal" | "onboarding") => {
+    setDemoError("");
+    setDemoLoading(mode);
+    const result = await enterMemberDemo(mode);
+    setDemoLoading(null);
+    if (result.error) {
+      setDemoError(result.error);
+      return;
+    }
+    navigate(mode === "onboarding" ? "/portal/onboarding" : "/portal");
   };
 
   const handleLogout = async () => {
@@ -140,6 +156,16 @@ export default function DashboardPage() {
                 Configurações
               </button>
               <button
+                type="button"
+                onClick={() => {
+                  openDemo("portal");
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-left px-4 py-3 rounded-md font-semibold text-sm uppercase text-yellow-400 hover:bg-neutral-800"
+              >
+                Ver área do aluno
+              </button>
+              <button
                 onClick={handleLogout}
                 className="w-full text-left px-4 py-3 rounded-md font-semibold text-sm uppercase text-orange-500 hover:bg-neutral-800"
               >
@@ -162,9 +188,31 @@ export default function DashboardPage() {
               <p className="text-neutral-500 text-sm">
                 Visão geral das atividades e métricas da academia
               </p>
+              {demoError ? <p className="text-orange-500 text-xs mt-2">{demoError}</p> : null}
             </div>
-            <motion.button
-              onClick={() => navigate("/modo-recepcao")}
+            <div className="flex flex-wrap items-center gap-3">
+              <motion.button
+                onClick={() => openDemo("portal")}
+                disabled={Boolean(demoLoading)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 rounded-md font-bold text-sm uppercase tracking-wide transition-colors disabled:opacity-60"
+              >
+                <Eye size={18} strokeWidth={2.5} />
+                {demoLoading === "portal" ? "Abrindo..." : "Ver área do aluno"}
+              </motion.button>
+              <motion.button
+                onClick={() => openDemo("onboarding")}
+                disabled={Boolean(demoLoading)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-6 py-3 bg-neutral-800 hover:bg-neutral-700 text-white rounded-md font-bold text-sm uppercase tracking-wide transition-colors disabled:opacity-60"
+              >
+                <FileEdit size={18} strokeWidth={2.5} />
+                {demoLoading === "onboarding" ? "Preparando..." : "Simular cadastro"}
+              </motion.button>
+              <motion.button
+                onClick={() => navigate("/modo-recepcao")}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               whileHover={{ scale: 1.05 }}
@@ -174,6 +222,7 @@ export default function DashboardPage() {
               <Radio size={18} strokeWidth={2.5} />
               Ativar Recepção
             </motion.button>
+            </div>
           </div>
         </div>
 
@@ -188,9 +237,25 @@ export default function DashboardPage() {
             <h1 className="font-display text-4xl lg:text-5xl font-black uppercase text-white mb-2">
               DASHBOARD
             </h1>
-            <p className="text-neutral-500 text-sm">
+            <p className="text-neutral-500 text-sm mb-4">
               Visão geral das atividades e métricas da academia
             </p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => openDemo("portal")}
+                className="px-4 py-2 bg-yellow-400 text-yellow-900 rounded-md font-bold uppercase text-xs"
+              >
+                Ver área do aluno
+              </button>
+              <button
+                type="button"
+                onClick={() => openDemo("onboarding")}
+                className="px-4 py-2 bg-neutral-800 text-white rounded-md font-bold uppercase text-xs"
+              >
+                Simular cadastro
+              </button>
+            </div>
           </motion.div>
 
           {/* Metrics Grid */}

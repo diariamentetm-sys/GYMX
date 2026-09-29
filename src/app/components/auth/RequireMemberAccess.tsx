@@ -26,7 +26,7 @@ export function RequireMemberAccess({
       return;
     }
 
-    if (staffProfile) {
+    if (staffProfile && !profile) {
       navigate("/dashboard", { replace: true });
       return;
     }

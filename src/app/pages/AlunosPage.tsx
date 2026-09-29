@@ -270,6 +270,11 @@ export default function AlunosPage() {
                             >
                               {PARQ_LABELS[student.parQStatus]}
                             </span>
+                            {student.isDemo ? (
+                              <span className="px-2 py-0.5 rounded text-xs font-semibold uppercase bg-yellow-400/20 text-yellow-400 border border-yellow-400/30">
+                                Demo
+                              </span>
+                            ) : null}
                           </div>
                           <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-500">
                             <div className="flex items-center gap-2">

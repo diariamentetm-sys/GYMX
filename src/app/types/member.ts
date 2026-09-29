@@ -79,6 +79,7 @@ export interface MemberProfile {
   parQStatus: ParQStatus;
   parQCompletedAt?: number;
   onboardingCompleted: boolean;
+  isDemo: boolean;
   lgpdRequests: LgpdRequest[];
   createdAt: number;
   updatedAt: number;

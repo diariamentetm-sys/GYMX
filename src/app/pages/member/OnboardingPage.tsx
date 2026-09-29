@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AlertTriangle, CheckCircle2, FileUp, HeartPulse } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import { DemoModeBanner } from "../../components/member/DemoModeBanner";
 import { completeOnboarding } from "../../services/memberService";
 import { uploadMemberDocument } from "../../services/storageService";
 import {
@@ -19,7 +20,7 @@ import type { ParQFormState } from "../../components/member/ParQForm";
 
 export function OnboardingPage() {
   const navigate = useNavigate();
-  const { session, profile, loading, refreshProfile } = useAuth();
+  const { session, profile, staffProfile, loading, refreshProfile } = useAuth();
   const [step, setStep] = useState(1);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
@@ -35,8 +36,13 @@ export function OnboardingPage() {
   useEffect(() => {
     if (loading) return;
 
-    if (!session || !profile) {
+    if (!session) {
       navigate("/login", { replace: true });
+      return;
+    }
+
+    if (!profile) {
+      navigate(staffProfile ? "/dashboard" : "/login", { replace: true });
       return;
     }
 
@@ -48,7 +54,7 @@ export function OnboardingPage() {
     if (profile.onboardingCompleted && profile.status === "ativo") {
       navigate("/portal", { replace: true });
     }
-  }, [loading, navigate, profile, session]);
+  }, [loading, navigate, profile, session, staffProfile]);
 
   if (loading || !profile || !session) {
     return (
@@ -116,6 +122,7 @@ export function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-neutral-950">
+      <DemoModeBanner />
       <div className="max-w-3xl mx-auto px-6 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

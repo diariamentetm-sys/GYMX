@@ -74,6 +74,34 @@ export async function isStaffBootstrapOpen(): Promise<boolean> {
   return Boolean(data);
 }
 
+export async function bootstrapStaffProfile(): Promise<{ success: boolean; error?: string }> {
+  const { data, error } = await supabase.rpc("bootstrap_staff_profile");
+  if (error) {
+    return { success: false, error: "Não foi possível criar o perfil da equipe." };
+  }
+  const payload = data as { success?: boolean; error?: string } | null;
+  if (!payload?.success) {
+    return { success: false, error: payload?.error ?? "Não foi possível criar o perfil da equipe." };
+  }
+  return { success: true };
+}
+
+export async function startStaffMemberDemo(
+  mode: "portal" | "onboarding"
+): Promise<{ success: boolean; error?: string }> {
+  const { data, error } = await supabase.rpc("ensure_staff_demo_member", {
+    p_mode: mode,
+  });
+  if (error) {
+    return { success: false, error: "Não foi possível abrir a demonstração." };
+  }
+  const payload = data as { success?: boolean; error?: string } | null;
+  if (!payload?.success) {
+    return { success: false, error: payload?.error ?? "Não foi possível abrir a demonstração." };
+  }
+  return { success: true };
+}
+
 export async function registerStaffAccount(input: {
   fullName: string;
   email: string;
@@ -89,6 +117,7 @@ export async function registerStaffAccount(input: {
     password: input.password,
     options: {
       data: {
+        app: "gymx",
         account_type: "staff",
         full_name: input.fullName.trim(),
       },
@@ -139,7 +168,7 @@ export async function listStaffMembers(): Promise<{
   const { data, error } = await supabase
     .from("member_profiles")
     .select(
-      "id, full_name, email, phone, status, par_q_status, par_q_completed_at, onboarding_completed, member_subscriptions(status, plan_id)"
+      "id, full_name, email, phone, status, par_q_status, par_q_completed_at, onboarding_completed, is_demo, member_subscriptions(status, plan_id)"
     )
     .order("full_name", { ascending: true });
 
@@ -168,6 +197,7 @@ export async function listStaffMembers(): Promise<{
         ? new Date(row.par_q_completed_at).getTime()
         : undefined,
       onboardingCompleted: Boolean(row.onboarding_completed),
+      isDemo: Boolean(row.is_demo),
       planName: (anyPlan ? planNames.get(anyPlan.plan_id) : undefined) || "Sem plano",
     };
   });
