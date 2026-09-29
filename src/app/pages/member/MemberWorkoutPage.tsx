@@ -324,6 +324,11 @@ export default function MemberWorkoutPage() {
                     title={exercise.name}
                     compact
                   />
+                  {!exercise.videoUrl ? (
+                    <p className="text-neutral-600 text-xs mt-2">
+                      Seu personal ainda não incluiu a videoaula deste movimento.
+                    </p>
+                  ) : null}
                 </div>
               ))}
             </div>

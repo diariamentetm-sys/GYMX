@@ -4,12 +4,13 @@ import { Calendar, Mail, Phone, User } from "lucide-react";
 import { FormInput } from "./FormInput";
 import { FormSelect } from "./FormSelect";
 import { CONTACT_SECTION_ID } from "../constants/anchors";
+import { BRAND_NAME } from "../constants/brand";
 
 const planOptions = [
   { value: "", label: "Selecione um plano (opcional)" },
-  { value: "livre", label: "Plano Livre" },
-  { value: "plus", label: "Plano Plus" },
-  { value: "elite", label: "Plano Elite" },
+  { value: "start", label: "Start — até 20 alunos" },
+  { value: "pro", label: "Pro — ilimitado" },
+  { value: "studio", label: "Studio — equipe" },
   { value: "indefinido", label: "Ainda não sei" },
 ];
 
@@ -46,15 +47,15 @@ export function ContactFormSection() {
           className="text-center mb-16 space-y-4"
         >
           <div className="text-orange-500 text-xs font-semibold uppercase tracking-widest">
-            Agende sua visita
+            Fale com a gente
           </div>
           <h2 className="text-5xl md:text-6xl font-black uppercase">
-            Vamos conversar{" "}
-            <span className="text-yellow-400">sem pressão</span>
+            Vamos montar o seu{" "}
+            <span className="text-yellow-400">estúdio digital</span>
           </h2>
           <p className="text-neutral-300 text-lg max-w-2xl mx-auto">
-            Preencha o formulário e nossa equipe entra em contato em até 2 horas
-            em dias úteis para agendar sua visita gratuita.
+            Conte quantos alunos você atende hoje. Respondemos em até 2 horas em
+            dias úteis — sem script de academia.
           </p>
         </motion.div>
 
@@ -71,10 +72,10 @@ export function ContactFormSection() {
               </h3>
               <ul className="space-y-4">
                 {[
-                  "Tour completo pela estrutura",
-                  "Conversa com um coach sobre seus objetivos",
-                  "Indicação de plano alinhado à sua rotina",
-                  "Zero compromisso na visita",
+                  "Demonstração do painel de personal",
+                  "Como colar a URL da sua videoaula na ficha",
+                  "Como o aluno vê o treino no portal",
+                  "Indicação de plano pelo tamanho da sua agenda",
                 ].map((item) => (
                   <li
                     key={item}
@@ -98,7 +99,7 @@ export function ContactFormSection() {
               </p>
               <p className="flex items-center gap-3">
                 <Calendar size={18} className="text-yellow-400 shrink-0" />
-                Seg–Sex, 6h às 22h · Sáb, 8h às 14h
+                Seg–Sex, 9h às 18h
               </p>
             </div>
           </div>
@@ -148,12 +149,12 @@ export function ContactFormSection() {
 
               <div className="space-y-2">
                 <label className="block text-neutral-300 text-xs font-semibold uppercase tracking-[0.1em]">
-                  Mensagem (opcional)
+                  Quantos alunos você atende hoje?
                 </label>
                 <textarea
                   name="mensagem"
                   rows={4}
-                  placeholder="Conte um pouco sobre seus objetivos ou dúvidas..."
+                  placeholder="Ex.: 12 alunos presenciais e 8 online. Quero sair do WhatsApp."
                   className="w-full bg-neutral-900 border border-neutral-700 rounded-md px-4 py-3.5 text-neutral-050 text-base placeholder:text-neutral-500 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 hover:border-neutral-600 resize-none"
                 />
               </div>
@@ -164,7 +165,7 @@ export function ContactFormSection() {
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-yellow-400/10 border border-yellow-400/40 rounded-md px-4 py-3 text-yellow-400 text-sm font-medium"
                 >
-                  Mensagem enviada! Nossa equipe entrará em contato em breve.
+                  Mensagem enviada! A equipe {BRAND_NAME} entra em contato em breve.
                 </motion.div>
               )}
 
@@ -175,11 +176,11 @@ export function ContactFormSection() {
                 className="w-full bg-yellow-400 text-yellow-900 py-4 rounded font-bold uppercase text-sm tracking-wide hover:bg-yellow-300 transition-colors flex items-center justify-center gap-2"
               >
                 <User size={18} />
-                Agendar minha visita gratuita
+                Quero uma demonstração
               </motion.button>
 
               <p className="text-neutral-500 text-xs text-center">
-                Ao enviar, você concorda em ser contatado pela equipe GymX.
+                Ao enviar, você concorda em ser contatado pela equipe {BRAND_NAME}.
                 Sem spam. Sem pressão.
               </p>
             </form>

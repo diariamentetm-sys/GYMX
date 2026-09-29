@@ -3,6 +3,7 @@ import { useState, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { Menu, X, Dumbbell, LogOut } from "lucide-react";
 import { MemberSidebar, memberNavItems } from "./MemberSidebar";
+import { BrandMark } from "../BrandMark";
 import { DemoModeBanner } from "./DemoModeBanner";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -48,8 +49,8 @@ export function MemberLayout({ title, subtitle, children }: MemberLayoutProps) {
               <Dumbbell className="text-yellow-900" size={18} strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="font-display text-xl font-black text-white leading-none group-hover:text-yellow-400 transition-colors">
-                GYMX
+              <h1 className="leading-none">
+                <BrandMark stacked className="text-xl" />
               </h1>
               <p className="text-neutral-500 text-[10px] uppercase tracking-wider">
                 {staffProfile ? "Demonstração do aluno" : "Área do Aluno"}

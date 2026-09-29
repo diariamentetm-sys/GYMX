@@ -3,6 +3,7 @@ import { FormEvent, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, UserPlus } from "lucide-react";
 import { FormInput } from "../components/FormInput";
+import { BrandMark } from "../components/BrandMark";
 import { GoogleAuthButton, isGoogleAuthEnabled } from "../components/auth/GoogleAuthButton";
 import { formatCpf, isMinor, isValidCpf, stripCpf } from "../utils/cpf";
 import { checkRegistrationAvailable } from "../services/memberService";
@@ -134,7 +135,7 @@ export function RegisterPage() {
             <ArrowLeft size={16} />
             Voltar ao login
           </Link>
-          <span className="font-display text-2xl font-black text-white">GYMX</span>
+          <BrandMark className="text-xl md:text-2xl" />
         </div>
       </header>
 
@@ -148,11 +149,11 @@ export function RegisterPage() {
             <UserPlus className="text-yellow-400" size={32} />
           </div>
           <h1 className="font-display text-4xl font-black uppercase text-white mb-3">
-            Criar <span className="text-yellow-400">conta</span>
+            Conta de <span className="text-yellow-400">aluno</span>
           </h1>
           <p className="text-neutral-400 text-sm">
-            Preencha os dados e clique em continuar. Na próxima tela você confirma um
-            código de 6 dígitos — ainda não é o login do Google.
+            Se você treina com um personal no Personal GYMX, preencha os dados.
+            Personais criam conta no acesso de personal.
           </p>
         </motion.div>
 

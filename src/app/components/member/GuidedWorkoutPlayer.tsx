@@ -19,7 +19,9 @@ import {
 import {
   extractYoutubeVideoId,
   isDirectVideoUrl,
+  isVimeoUrl,
   isYoutubeUrl,
+  toPlaybackEmbedUrl,
   toYoutubeEmbedUrl,
 } from "../../utils/video";
 
@@ -430,9 +432,16 @@ function GuidedExerciseVideo({
   return (
     <div className="relative w-full aspect-video rounded-md overflow-hidden bg-neutral-950 border border-neutral-700">
       <iframe
-        src={url}
+        src={
+          isVimeoUrl(url)
+            ? `${toPlaybackEmbedUrl(url)}${toPlaybackEmbedUrl(url).includes("?") ? "&" : "?"}${
+                active ? "autoplay=1&muted=1&loop=1" : "muted=1"
+              }`
+            : toPlaybackEmbedUrl(url)
+        }
         title={`Vídeo: ${title}`}
         className="absolute inset-0 w-full h-full"
+        allow="autoplay; fullscreen; picture-in-picture"
         allowFullScreen
       />
     </div>

@@ -48,7 +48,7 @@ export default function MemberHomePage() {
     {
       icon: ClipboardCheck,
       title: "Check-in",
-      description: "Registrar entrada na academia",
+      description: "Registrar entrada no treino",
       path: "/portal/check-in",
       color: "text-green-400",
       bg: "bg-green-400/10",

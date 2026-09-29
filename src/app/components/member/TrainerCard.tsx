@@ -55,7 +55,7 @@ export function TrainerCard({
         </div>
         {!compact && (
           <a
-            href={`mailto:${trainer.email}?subject=GYMX - Dúvida sobre treino`}
+            href={`mailto:${trainer.email}?subject=Personal GYMX - Dúvida sobre treino`}
             className="flex items-center gap-1 text-yellow-400 hover:text-yellow-300 text-xs font-semibold uppercase shrink-0"
           >
             <MessageCircle size={14} />

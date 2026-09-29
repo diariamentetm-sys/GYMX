@@ -883,12 +883,12 @@ export default function NewStudentPage() {
                     Declaro que as informações acima são verdadeiras e estou
                     ciente de que a prática de atividades físicas envolve
                     riscos. Comprometo-me a informar qualquer alteração em meu
-                    estado de saúde à administração da academia.
+                    estado de saúde ao seu personal.
                   </p>
                   <p className="text-neutral-300 text-sm leading-relaxed">
                     Autorizo o uso dos meus dados conforme a Lei Geral de
-                    Proteção de Dados (LGPD) para fins administrativos da
-                    academia, incluindo comunicações sobre serviços, agendamentos
+                    Proteção de Dados (LGPD) para fins administrativos do
+                    Personal GYMX, incluindo comunicações sobre treinos, agendamentos
                     e informações relevantes.
                   </p>
                 </div>

@@ -23,6 +23,8 @@ import DashboardPage from "./pages/DashboardPage";
 import AlunosPage from "./pages/AlunosPage";
 import NewStudentPage from "./pages/NewStudentPage";
 import StudentDetailPage from "./pages/StudentDetailPage";
+import StudentWorkoutPage from "./pages/StudentWorkoutPage";
+import StudentExerciseDetailPage from "./pages/StudentExerciseDetailPage";
 import EditStudentPage from "./pages/EditStudentPage";
 import ConfiguracoesPage from "./pages/ConfiguracoesPage";
 import CheckinsPage from "./pages/CheckinsPage";
@@ -71,6 +73,8 @@ export default function App() {
         <Route path="/dashboard/alunos" element={<RequireStaff><AlunosPage /></RequireStaff>} />
         <Route path="/dashboard/alunos/novo" element={<RequireStaff><NewStudentPage /></RequireStaff>} />
         <Route path="/dashboard/alunos/:id" element={<RequireStaff><StudentDetailPage /></RequireStaff>} />
+        <Route path="/dashboard/alunos/:id/treino" element={<RequireStaff><StudentWorkoutPage /></RequireStaff>} />
+        <Route path="/dashboard/alunos/:id/treino/:exerciseId" element={<RequireStaff><StudentExerciseDetailPage /></RequireStaff>} />
         <Route path="/dashboard/alunos/:id/editar" element={<RequireStaff><EditStudentPage /></RequireStaff>} />
         <Route path="/dashboard/checkins" element={<RequireStaff><CheckinsPage /></RequireStaff>} />
         <Route path="/dashboard/treinos" element={<RequireStaff><TreinosPage /></RequireStaff>} />

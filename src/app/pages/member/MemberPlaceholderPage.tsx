@@ -28,7 +28,7 @@ export default function MemberPlaceholderPage({
           </h2>
           <p className="text-neutral-500 text-base max-w-md mx-auto">
             Esta funcionalidade está sendo desenvolvida conforme as regras de
-            negócio da área do aluno GYMX.
+            negócio da área do aluno no Personal GYMX.
           </p>
         </motion.div>
       </MemberLayout>

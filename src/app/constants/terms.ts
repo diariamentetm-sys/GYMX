@@ -1,9 +1,9 @@
 export const CURRENT_TERMS_VERSION = "2026.09.1";
 export const TERMS_EFFECTIVE_DATE = "16 de setembro de 2026";
-export const CONTROLLER_NAME = "GYMX";
+export const CONTROLLER_NAME = "Personal GYMX";
 
 export const TERMS_OF_USE_SUMMARY =
-  "Regras de uso da plataforma e da academia, incluindo acesso, planos, cancelamento com aviso prévio de 60 dias, congelamento e responsabilidades do aluno.";
+  "Regras de uso da plataforma Personal GYMX para o personal gerir alunos e para o aluno acessar o treino prescrito, incluindo cadastro, planos, cancelamento e responsabilidades.";
 
 export const PRIVACY_POLICY_SUMMARY =
   "Tratamento de dados pessoais conforme a Lei nº 13.709/2018 (LGPD), finalidades, bases legais, direitos do titular e canal de atendimento.";
@@ -22,7 +22,7 @@ Estes Termos regulam o uso da plataforma digital ${CONTROLLER_NAME} (“Platafor
 Ao marcar “Li e aceito”, o titular declara ter lido, compreendido e concordado com este instrumento.
 
 1. OBJETO
-1.1. A Plataforma destina-se à gestão de cadastro, planos, check-in, agendamento de aulas, acompanhamento de treinos e comunicações relacionadas à academia.
+1.1. A Plataforma destina-se a personais trainers e respectivos alunos: gestão de cadastro, planos, check-in, prescrição de treinos com videoaulas do profissional e comunicações relacionadas ao acompanhamento.
 1.2. O acesso às dependências físicas e aos serviços presenciais observa o plano contratado, a capacidade da unidade, horários de funcionamento e regras internas de convivência e segurança.
 
 2. CADASTRO E CONTA

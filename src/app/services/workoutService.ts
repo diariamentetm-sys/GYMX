@@ -1,4 +1,3 @@
-import { resolveExerciseVideoUrl } from "../constants/exerciseVideos";
 import { supabase } from "../lib/supabase";
 import type {
   GymTrainer,
@@ -76,6 +75,8 @@ function mapTrainer(row: TrainerRow | null | undefined): GymTrainer | undefined 
   };
 }
 
+const STORAGE_VIDEO_PREFIX = "storage:";
+
 function mapExercise(row: ExerciseRow): WorkoutExercise {
   return {
     id: row.id,
@@ -87,8 +88,32 @@ function mapExercise(row: ExerciseRow): WorkoutExercise {
     loadKg: row.load_kg !== null ? Number(row.load_kg) : undefined,
     restSeconds: row.rest_seconds,
     notes: row.notes ?? undefined,
-    videoUrl: resolveExerciseVideoUrl(row.name, row.video_url ?? undefined),
+    videoRef: row.video_url ?? undefined,
+    videoUrl: row.video_url?.startsWith(STORAGE_VIDEO_PREFIX)
+      ? undefined
+      : row.video_url?.trim() || undefined,
   };
+}
+
+async function hydrateExerciseVideos(exercises: WorkoutExercise[]): Promise<WorkoutExercise[]> {
+  return Promise.all(
+    exercises.map(async (exercise) => {
+      const ref = exercise.videoRef;
+      if (!ref?.startsWith(STORAGE_VIDEO_PREFIX)) {
+        return exercise;
+      }
+
+      const path = ref.slice(STORAGE_VIDEO_PREFIX.length);
+      const { data } = await supabase.storage
+        .from("exercise-videos")
+        .createSignedUrl(path, 60 * 60);
+
+      return {
+        ...exercise,
+        videoUrl: data?.signedUrl ?? undefined,
+      };
+    })
+  );
 }
 
 function mapProgram(row: ProgramRow, exercises?: WorkoutExercise[]): WorkoutProgram {
@@ -159,7 +184,13 @@ export async function fetchActiveWorkoutPrograms(
     return acc;
   }, {});
 
-  return programs.map((row) => mapProgram(row, exerciseMap[row.id] ?? []));
+  const hydrated = await Promise.all(
+    programs.map(async (row) =>
+      mapProgram(row, await hydrateExerciseVideos(exerciseMap[row.id] ?? []))
+    )
+  );
+
+  return hydrated;
 }
 
 export async function fetchWorkoutProgramById(
@@ -181,7 +212,7 @@ export async function fetchWorkoutProgramById(
 
   return mapProgram(
     data as ProgramRow,
-    ((exercises ?? []) as ExerciseRow[]).map(mapExercise)
+    await hydrateExerciseVideos(((exercises ?? []) as ExerciseRow[]).map(mapExercise))
   );
 }
 

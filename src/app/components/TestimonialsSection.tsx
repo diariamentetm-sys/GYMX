@@ -1,7 +1,8 @@
 import { motion } from "motion/react";
 import { useInView } from "motion/react";
 import { useRef } from "react";
-import { CONTACT_SECTION_HREF } from "../constants/anchors";
+import { Link } from "react-router";
+import { BRAND_SIGNUP_PATH } from "../constants/brand";
 
 export function TestimonialsSection() {
   const ref = useRef(null);
@@ -9,35 +10,34 @@ export function TestimonialsSection() {
 
   const testimonials = [
     {
-      text: "Treinei em vários lugares antes. Nenhum chegou perto do nível de acompanhamento que tenho aqui. Em 6 meses, perdi 14kg e ganhei uma força que nunca pensei que teria.",
-      author: "Rafael Mendes",
-      age: 38,
-      role: "Executivo",
+      text: "Saí do WhatsApp bagunçado. Cadastro o aluno, colo a URL da minha videoaula e ele já vê o movimento no portal. Meu método continua meu — só ficou organizado.",
+      author: "Marina Alves",
+      cred: "CREF 012345-G/SP",
+      role: "Personal · hipertrofia",
     },
     {
-      text: "O ambiente é diferente. Não tem bagunça, não tem fila, não tem desculpa. Os coaches sabem exatamente o que estão fazendo e me empurram além do que eu me empurraria sozinha.",
-      author: "Camila Torres",
-      age: 31,
-      role: "Médica",
+      text: "Eu perdia aluno porque a ficha vivia desatualizada. Agora altero o treino no painel e no mesmo dia ele treina certo. Parece que contratei uma recepção digital.",
+      author: "Rafael Costa",
+      cred: "CREF 098761-G/RJ",
+      role: "Personal · emagrecimento",
     },
     {
-      text: "Voltei a treinar depois de 5 anos parado. Achei que seria difícil me adaptar. Em duas semanas já estava no ritmo. A equipe faz toda a diferença.",
-      author: "Bruno Cavalcanti",
-      age: 44,
-      role: "Empresário",
+      text: "Atendo em condomínio e online. O aluno não precisa me mandar 'qual o treino de hoje?'. Abre o Personal GYMX e está lá, com o meu vídeo.",
+      author: "Camila Duarte",
+      cred: "CREF 055210-G/MG",
+      role: "Personal · atendimento híbrido",
     },
     {
-      text: "Vim pela estrutura. Fiquei pelo resultado. Hoje indico para todo mundo que conheço que quer treinar de verdade.",
-      author: "Juliana Ferraz",
-      age: 27,
-      role: "Arquiteta",
+      text: "O PAR-Q e a lista de alunos no mesmo lugar me deram segurança. Pareço mais profissional sem virar uma academia de 200 m².",
+      author: "Bruno Teixeira",
+      cred: "CREF 033440-G/PR",
+      role: "Personal · estúdio próprio",
     },
   ];
 
   return (
-    <section ref={ref} className="relative py-32 bg-neutral-900">
+    <section ref={ref} id="depoimentos" className="relative py-32 bg-neutral-900">
       <div className="max-w-[1440px] mx-auto px-8 lg:px-16">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -45,26 +45,24 @@ export function TestimonialsSection() {
           className="text-center mb-16 space-y-4"
         >
           <div className="text-orange-500 text-xs font-semibold uppercase tracking-widest">
-            O que dizem nossos alunos
+            Quem já opera o próprio estúdio
           </div>
           <h2 className="text-5xl md:text-6xl font-black uppercase">
-            Palavras de quem já{" "}
-            <span className="text-yellow-400">chegou lá</span>
+            Personais que pararam de{" "}
+            <span className="text-yellow-400">improvisar</span>
           </h2>
         </motion.div>
 
-        {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {testimonials.map((testimonial, index) => (
             <motion.div
-              key={index}
+              key={testimonial.author}
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 + index * 0.15 }}
               whileHover={{ y: -5 }}
               className="bg-gradient-to-br from-neutral-950 to-neutral-800 border border-neutral-700 p-8 rounded-md hover:border-yellow-400/50 transition-all"
             >
-              {/* Quote */}
               <div className="mb-6">
                 <span className="text-yellow-400 text-6xl font-display leading-none">
                   "
@@ -74,34 +72,29 @@ export function TestimonialsSection() {
                 </p>
               </div>
 
-              {/* Author */}
               <div className="border-t border-neutral-700 pt-4">
-                <p className="text-white font-semibold">
-                  {testimonial.author}, {testimonial.age} anos
-                </p>
-                <p className="text-neutral-300 text-sm italic">
-                  {testimonial.role}
-                </p>
+                <p className="text-white font-semibold">{testimonial.author}</p>
+                <p className="text-neutral-300 text-sm italic">{testimonial.role}</p>
+                <p className="text-neutral-500 text-xs mt-1">{testimonial.cred}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.8 }}
           className="text-center"
         >
-          <motion.a
-            href={CONTACT_SECTION_HREF}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-block bg-yellow-400 text-yellow-900 px-10 py-4 rounded font-bold uppercase text-sm tracking-wide transition-colors hover:bg-yellow-300"
-          >
-            Agendar minha visita gratuita →
-          </motion.a>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link
+              to={BRAND_SIGNUP_PATH}
+              className="inline-block bg-yellow-400 text-yellow-900 px-10 py-4 rounded font-bold uppercase text-sm tracking-wide transition-colors hover:bg-yellow-300"
+            >
+              Quero o mesmo controle →
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
     </section>

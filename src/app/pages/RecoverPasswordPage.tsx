@@ -3,8 +3,10 @@ import { FormEvent, useState } from "react";
 import { Link } from "react-router";
 import { ArrowLeft, KeyRound, Mail } from "lucide-react";
 import { FormInput } from "../components/FormInput";
+import { BrandMark } from "../components/BrandMark";
 import { requestPasswordReset } from "../services/memberService";
 import { scrollToPageTop } from "../utils/scroll";
+import { BRAND_NAME } from "../constants/brand";
 
 export function RecoverPasswordPage() {
   const [email, setEmail] = useState("");
@@ -45,9 +47,9 @@ export function RecoverPasswordPage() {
           <Link
             to="/"
             onClick={() => requestAnimationFrame(() => scrollToPageTop())}
-            className="font-display text-3xl font-black tracking-tight text-white hover:text-yellow-400 transition-colors"
+            className="group"
           >
-            GYMX
+            <BrandMark className="text-2xl md:text-3xl" />
           </Link>
           <Link
             to="/login"
@@ -81,7 +83,7 @@ export function RecoverPasswordPage() {
             <div className="bg-neutral-900 border border-yellow-400/30 rounded-md p-6 text-center space-y-4">
               <Mail className="text-yellow-400 mx-auto" size={28} />
               <p className="text-white text-sm leading-relaxed">
-                Se <strong>{email.trim().toLowerCase()}</strong> tiver conta na GYMX,
+                Se <strong>{email.trim().toLowerCase()}</strong> tiver conta no {BRAND_NAME},
                 o e-mail já saiu. Abra o link em até 1 hora.
               </p>
               <p className="text-neutral-500 text-xs">

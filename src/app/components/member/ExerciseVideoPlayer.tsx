@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Play } from "lucide-react";
-import { isDirectVideoUrl, isYoutubeUrl, toYoutubeEmbedUrl } from "../../utils/video";
+import { isDirectVideoUrl, isYoutubeUrl, toPlaybackEmbedUrl } from "../../utils/video";
 
 interface ExerciseVideoPlayerProps {
   url?: string;
@@ -21,7 +21,10 @@ export function ExerciseVideoPlayer({
 
   const isYoutube = isYoutubeUrl(url);
   const isDirect = isDirectVideoUrl(url);
-  const embedUrl = isYoutube ? toYoutubeEmbedUrl(url) : url;
+  const embedUrl = toPlaybackEmbedUrl(url);
+  const youtubeSrc = isYoutube
+    ? `${embedUrl}${embedUrl.includes("?") ? "&" : "?"}rel=0&modestbranding=1`
+    : embedUrl;
 
   if (compact && !expanded) {
     return (
@@ -59,7 +62,7 @@ export function ExerciseVideoPlayer({
       <div className="relative w-full aspect-video rounded-md overflow-hidden bg-neutral-950 border border-neutral-700">
         {isYoutube ? (
           <iframe
-            src={`${embedUrl}?rel=0&modestbranding=1`}
+            src={youtubeSrc}
             title={`Vídeo: ${title}`}
             className="absolute inset-0 w-full h-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

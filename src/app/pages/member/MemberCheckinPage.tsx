@@ -55,7 +55,7 @@ export default function MemberCheckinPage() {
                 </h2>
                 <p className="text-neutral-300 text-sm mb-4">
                   Status do plano: <strong>{statusLabel}</strong>. É necessário um plano
-                  ativo e adimplente para registrar entrada na academia.
+                  ativo e adimplente para registrar o check-in.
                 </p>
                 <button
                   type="button"

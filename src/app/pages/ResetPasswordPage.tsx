@@ -3,8 +3,10 @@ import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, KeyRound } from "lucide-react";
 import { FormInput } from "../components/FormInput";
+import { BrandMark } from "../components/BrandMark";
 import { useAuth } from "../contexts/AuthContext";
 import { updateMemberPassword } from "../services/memberService";
+import { BRAND_NAME } from "../constants/brand";
 
 export function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -66,9 +68,9 @@ export function ResetPasswordPage() {
         <div className="max-w-[1440px] mx-auto px-6 lg:px-16 h-20 flex items-center justify-between">
           <Link
             to="/"
-            className="font-display text-3xl font-black tracking-tight text-white hover:text-yellow-400 transition-colors"
+            className="group"
           >
-            GYMX
+            <BrandMark className="text-2xl md:text-3xl" />
           </Link>
           <Link
             to="/login"
@@ -95,7 +97,7 @@ export function ResetPasswordPage() {
           </h1>
           <p className="text-neutral-400 text-sm text-center mb-10">
             {isPasswordRecovery || session
-              ? "Defina uma senha nova para a sua conta GYMX."
+              ? `Defina uma senha nova para a sua conta ${BRAND_NAME}.`
               : "Aguardando validação do link enviado por e-mail."}
           </p>
 

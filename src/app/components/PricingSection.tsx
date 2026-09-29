@@ -1,7 +1,8 @@
 import { motion } from "motion/react";
 import { useInView } from "motion/react";
 import { useRef } from "react";
-import { CONTACT_SECTION_HREF } from "../constants/anchors";
+import { Link } from "react-router";
+import { BRAND_SIGNUP_PATH } from "../constants/brand";
 
 export function PricingSection() {
   const ref = useRef(null);
@@ -9,54 +10,50 @@ export function PricingSection() {
 
   const plans = [
     {
-      badge: "Essencial",
-      title: "PLANO LIVRE",
-      subtitle: "Para quem quer autonomia com estrutura",
-      price: "290",
+      badge: "Para começar",
+      title: "START",
+      subtitle: "Você, seus alunos e a primeira ficha profissional",
+      price: "97",
       period: "/mês",
       features: [
-        "Acesso à academia em horário comercial",
-        "Avaliação física de entrada",
-        "Protocolo de treino inicial",
-        "Acesso a toda a área de equipamentos",
-        "App de acompanhamento de treino",
-        "1 revisão de protocolo por trimestre",
+        "Até 20 alunos ativos",
+        "Fichas de treino com séries, reps e descanso",
+        "URL da sua videoaula em cada exercício",
+        "Portal do aluno com Meu Treino",
+        "PAR-Q e revisão de saúde",
+        "1 personal no painel",
       ],
     },
     {
       badge: "Mais escolhido",
-      title: "PLANO PLUS",
-      subtitle: "Para quem quer resultado com acompanhamento",
-      price: "490",
+      title: "PRO",
+      subtitle: "Para quem vive de personal e não quer teto de alunos",
+      price: "197",
       period: "/mês",
       features: [
-        "Acesso à academia em horário completo",
-        "Avaliação física completa",
-        "Protocolo individual personalizado",
-        "4 sessões mensais com coach dedicado",
-        "Acesso a todas as aulas em grupo",
-        "App de acompanhamento com histórico",
-        "Revisão de protocolo a cada 6 semanas",
-        "Acesso prioritário em horário nobre",
+        "Alunos ilimitados",
+        "Biblioteca das suas videoaulas",
+        "Prescrição e detalhe por exercício",
+        "Check-in e acompanhamento",
+        "Visão do aluno em demonstração",
+        "Suporte prioritário",
+        "Marca Personal GYMX no portal do aluno",
       ],
       featured: true,
     },
     {
-      badge: "Alto desempenho",
-      title: "PLANO ELITE",
-      subtitle: "Para quem não aceita menos que o máximo",
-      price: "890",
+      badge: "Estúdio",
+      title: "STUDIO",
+      subtitle: "Quando o negócio já tem equipe e muitos horários",
+      price: "397",
       period: "/mês",
       features: [
-        "Acesso 24h à academia",
-        "Avaliação física e funcional completa",
-        "Protocolo de periodização avançada",
-        "Acompanhamento ilimitado com coach",
-        "Coach exclusivo para as suas sessões",
-        "Análise de bioimpedância mensal",
-        "Relatório de performance trimestral",
-        "Área de recuperação VIP",
-        "Estacionamento reservado",
+        "Tudo do Pro",
+        "Vários personais no mesmo painel",
+        "Gestão de alunos por profissional",
+        "Relatórios de frequência",
+        "Onboarding guiado da equipe",
+        "Canal direto com o time Personal GYMX",
       ],
     },
   ];
@@ -64,7 +61,6 @@ export function PricingSection() {
   return (
     <section ref={ref} className="relative py-32 bg-neutral-950" id="planos">
       <div className="max-w-[1440px] mx-auto px-8 lg:px-16">
-        {/* Section Header */}
         <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -76,8 +72,8 @@ export function PricingSection() {
               Planos
             </div>
             <h2 className="text-5xl md:text-6xl font-black uppercase">
-              Escolha o plano que{" "}
-              <span className="text-yellow-400">combina</span> com você
+              Invista no que{" "}
+              <span className="text-yellow-400">paga</span> o seu mês
             </h2>
           </motion.div>
 
@@ -87,12 +83,11 @@ export function PricingSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-neutral-050 text-base max-w-md"
           >
-            Todos os planos incluem avaliação física, protocolo individual e
-            acesso a toda a estrutura da academia.
+            Todos os planos incluem cadastro de alunos, ficha com a sua videoaula
+            e portal para quem treina com você.
           </motion.p>
         </div>
 
-        {/* Pricing Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {plans.map((plan, index) => (
             <motion.div
@@ -107,7 +102,6 @@ export function PricingSection() {
                   : "border-neutral-700 hover:border-neutral-500"
               }`}
             >
-              {/* Badge */}
               <div
                 className={`absolute -top-3 left-8 px-4 py-1 rounded text-xs font-bold uppercase tracking-wider ${
                   plan.featured
@@ -118,30 +112,24 @@ export function PricingSection() {
                 {plan.badge}
               </div>
 
-              {/* Title */}
               <h3 className="font-display text-2xl font-black uppercase mb-2 text-white mt-4">
                 {plan.title}
               </h3>
 
-              {/* Subtitle */}
               <p className="text-neutral-300 text-sm mb-6">{plan.subtitle}</p>
 
-              {/* Price */}
               <div className="flex items-end gap-2 mb-8 pb-6 border-b border-neutral-700">
                 <span className="text-neutral-500 text-sm">A partir de</span>
                 <span className="font-display text-5xl font-black text-white">
                   R$ {plan.price}
                 </span>
-                <span className="text-neutral-300 text-lg mb-2">
-                  {plan.period}
-                </span>
+                <span className="text-neutral-300 text-lg mb-2">{plan.period}</span>
               </div>
 
-              {/* Features */}
               <ul className="space-y-3 mb-8">
-                {plan.features.map((feature, idx) => (
+                {plan.features.map((feature) => (
                   <li
-                    key={idx}
+                    key={feature}
                     className="flex items-start gap-3 text-neutral-050 text-sm"
                   >
                     <span className="text-yellow-400 mt-1">→</span>
@@ -150,24 +138,22 @@ export function PricingSection() {
                 ))}
               </ul>
 
-              {/* CTA Button */}
-              <motion.a
-                href={CONTACT_SECTION_HREF}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`block w-full py-4 rounded font-bold uppercase text-sm tracking-wide transition-colors text-center ${
-                  plan.featured
-                    ? "bg-yellow-400 text-yellow-900 hover:bg-yellow-300"
-                    : "bg-transparent border-2 border-neutral-700 text-white hover:border-yellow-400 hover:text-yellow-400"
-                }`}
-              >
-                Escolher {plan.title.split(" ")[1]}
-              </motion.a>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to={BRAND_SIGNUP_PATH}
+                  className={`block w-full py-4 rounded font-bold uppercase text-sm tracking-wide transition-colors text-center ${
+                    plan.featured
+                      ? "bg-yellow-400 text-yellow-900 hover:bg-yellow-300"
+                      : "bg-transparent border-2 border-neutral-700 text-white hover:border-yellow-400 hover:text-yellow-400"
+                  }`}
+                >
+                  Começar no {plan.title}
+                </Link>
+              </motion.div>
             </motion.div>
           ))}
         </div>
 
-        {/* Footer Note */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -175,18 +161,9 @@ export function PricingSection() {
           className="text-center space-y-4"
         >
           <p className="text-neutral-500 text-sm max-w-3xl mx-auto">
-            Todos os planos têm fidelidade mínima de 3 meses. Pagamento mensal,
-            trimestral ou anual (com desconto). Matrículas abertas com vagas
-            limitadas por turno.
+            Cancele quando quiser. Sem fidelidade de academia. O aluno continua
+            vendo só o que você prescreveu enquanto a conta estiver ativa.
           </p>
-          <motion.a
-            href={CONTACT_SECTION_HREF}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-block bg-transparent border-2 border-neutral-700 text-white px-8 py-3 rounded font-semibold uppercase text-sm tracking-wide hover:border-yellow-400 hover:text-yellow-400 transition-all mt-4"
-          >
-            Não sabe qual escolher? Falar com um especialista →
-          </motion.a>
         </motion.div>
       </div>
     </section>

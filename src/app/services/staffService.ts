@@ -161,6 +161,18 @@ export async function registerStaffAccount(input: {
   return { staff };
 }
 
+export async function getStaffMember(
+  memberId: string
+): Promise<{ member: StaffMemberListItem | null; error?: string }> {
+  const result = await listStaffMembers();
+  if (result.error) {
+    return { member: null, error: result.error };
+  }
+  return {
+    member: result.members.find((item) => item.id === memberId) ?? null,
+  };
+}
+
 export async function listStaffMembers(): Promise<{
   members: StaffMemberListItem[];
   error?: string;

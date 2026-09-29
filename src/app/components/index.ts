@@ -1,6 +1,7 @@
 // Layout Components
 export { Header } from "./Header";
 export { Footer } from "./Footer";
+export { BrandMark } from "./BrandMark";
 
 // Section Components
 export { Hero } from "./Hero";

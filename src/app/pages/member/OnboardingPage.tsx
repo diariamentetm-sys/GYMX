@@ -130,10 +130,10 @@ export function OnboardingPage() {
           className="text-center mb-10"
         >
           <h1 className="font-display text-4xl font-black uppercase text-white mb-3">
-            Onboarding <span className="text-yellow-400">GYMX</span>
+            Onboarding <span className="text-yellow-400">Personal</span> GYMX
           </h1>
           <p className="text-neutral-400 text-sm">
-            Leia os documentos e registre o aceite. Versão vigente dos termos da GYMX.
+            Leia os documentos e registre o aceite. Versão vigente dos termos do Personal GYMX.
           </p>
 
           <div className="flex justify-center gap-2 mt-6">

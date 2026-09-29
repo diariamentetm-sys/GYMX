@@ -14,6 +14,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import { fetchMemberSubscription } from "../../services/subscriptionService";
 import { SUBSCRIPTION_STATUS_LABELS } from "../../constants/subscriptions";
+import { BrandMark } from "../BrandMark";
 
 const navItems = [
   { icon: Home, label: "Início", path: "/portal" },
@@ -84,8 +85,8 @@ export function MemberSidebar() {
             <div className="w-10 h-10 bg-yellow-400 rounded flex items-center justify-center group-hover:bg-yellow-300 transition-colors">
               <Dumbbell className="text-yellow-900" size={24} strokeWidth={2.5} />
             </div>
-            <h1 className="font-display text-2xl font-black text-white tracking-tight group-hover:text-yellow-400 transition-colors">
-              GYMX
+            <h1>
+              <BrandMark stacked className="text-2xl" />
             </h1>
           </div>
           <p className="text-neutral-500 text-xs uppercase tracking-wider font-semibold">

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { motion } from "motion/react";
 import { ArrowLeft, Shield } from "lucide-react";
 import { FormInput } from "../components/FormInput";
+import { BrandMark } from "../components/BrandMark";
 import { useAuth } from "../contexts/AuthContext";
 import { isStaffBootstrapOpen, bootstrapStaffProfile } from "../services/staffService";
 import { scrollToPageTop } from "../utils/scroll";
@@ -82,12 +83,12 @@ export function StaffAccessPage() {
         navigate("/dashboard", { replace: true });
         return;
       }
-      setError(promoted.error ?? "Esta conta é de aluno. Use outro e-mail para o perfil da equipe.");
+      setError(promoted.error ?? "Esta conta é de aluno. Use outro e-mail para a conta de personal.");
       if (!bootstrapOpen) await signOut();
       return;
     }
 
-    setError("Não foi possível acessar o painel da equipe.");
+    setError("Não foi possível acessar o painel do personal.");
   };
 
   if (!loading && session && profile && !staffProfile) {
@@ -96,7 +97,7 @@ export function StaffAccessPage() {
         <div className="max-w-md w-full bg-neutral-900 border border-neutral-800 rounded-md p-8 text-center">
           <Shield className="mx-auto text-yellow-400 mb-4" size={36} />
           <h1 className="font-display text-3xl font-black uppercase text-white mb-3">
-            {bootstrapOpen ? "Virar administrador" : "Conta de aluno"}
+            {bootstrapOpen ? "Virar personal" : "Conta de aluno"}
           </h1>
           <p className="text-neutral-400 text-sm mb-6">
             {bootstrapOpen
@@ -119,7 +120,7 @@ export function StaffAccessPage() {
               }}
               className="w-full py-3 bg-yellow-400 text-yellow-900 rounded-md font-bold uppercase text-sm tracking-wider hover:bg-yellow-300"
             >
-              {submitting ? "Aguarde..." : "Tornar esta conta administradora"}
+              {submitting ? "Aguarde..." : "Tornar esta conta de personal"}
             </button>
           ) : (
             <button
@@ -127,7 +128,7 @@ export function StaffAccessPage() {
               onClick={() => signOut()}
               className="w-full py-3 bg-yellow-400 text-yellow-900 rounded-md font-bold uppercase text-sm tracking-wider hover:bg-yellow-300"
             >
-              Sair e criar perfil da equipe
+              Sair e criar conta de personal
             </button>
           )}
           {error ? <p className="text-orange-500 text-sm mt-4">{error}</p> : null}
@@ -143,9 +144,9 @@ export function StaffAccessPage() {
           <button
             type="button"
             onClick={handleGoHome}
-            className="font-display text-3xl font-black tracking-tight text-white hover:text-yellow-400 transition-colors"
+            className="group"
           >
-            GYMX
+            <BrandMark className="text-2xl md:text-3xl" />
           </button>
           <Link
             to="/login"
@@ -168,18 +169,18 @@ export function StaffAccessPage() {
             </div>
             <div>
               <p className="text-yellow-400 text-xs font-semibold uppercase tracking-wider">
-                Administração de alunos
+                Personal GYMX
               </p>
               <h1 className="font-display text-3xl font-black uppercase text-white">
-                Acesso da equipe
+                {mode === "register" ? "Criar conta" : "Acesso do personal"}
               </h1>
             </div>
           </div>
 
           <p className="text-neutral-400 text-sm mb-8">
             {bootstrapOpen
-              ? "Crie o primeiro administrador ou entre com uma conta existente para promovê-la. Depois você navega o portal do aluno em modo demonstração."
-              : "Entre com o perfil da equipe para revisar PAR-Q, gerenciar alunos e abrir a visão demonstrativa."}
+              ? "Crie sua conta de personal para gerir alunos, fichas e videoaulas. Depois você também pode abrir a visão do aluno em demonstração."
+              : "Entre com a conta de personal para gerir alunos, prescrever treinos e abrir a visão do aluno."}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -192,7 +193,7 @@ export function StaffAccessPage() {
               />
             )}
             <FormInput
-              label="E-mail da equipe"
+              label="E-mail do personal"
               type="email"
               icon="email"
               value={email}
@@ -218,7 +219,7 @@ export function StaffAccessPage() {
               {submitting
                 ? "Aguarde..."
                 : mode === "register"
-                  ? "Criar administrador"
+                  ? "Criar conta de personal"
                   : "Entrar no painel"}
             </button>
           </form>
@@ -232,7 +233,7 @@ export function StaffAccessPage() {
               }}
               className="w-full mt-4 text-neutral-500 text-sm hover:text-yellow-400"
             >
-              {mode === "register" ? "Já tenho perfil da equipe" : "Criar o primeiro administrador"}
+              {mode === "register" ? "Já tenho conta de personal" : "Criar conta de personal"}
             </button>
           )}
 

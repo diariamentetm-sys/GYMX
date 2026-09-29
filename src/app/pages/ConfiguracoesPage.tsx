@@ -159,7 +159,7 @@ export default function ConfiguracoesPage() {
     const newErrors: Partial<GymSettings> = {};
 
     if (!settings.nome.trim()) {
-      newErrors.nome = "Nome da academia é obrigatório";
+      newErrors.nome = "Nome do estúdio é obrigatório";
     }
 
     if (!settings.cnpj.trim()) {
@@ -437,7 +437,7 @@ export default function ConfiguracoesPage() {
                   CONFIGURAÇÕES
                 </h1>
                 <p className="text-neutral-500 text-sm">
-                  Gerencie as configurações da academia
+                  Gerencie as configurações do seu estúdio
                 </p>
               </motion.div>
 
@@ -503,10 +503,10 @@ export default function ConfiguracoesPage() {
                 {/* Section Title */}
                 <div className="mb-6">
                   <h2 className="font-display text-2xl font-black uppercase text-white mb-2">
-                    INFORMAÇÕES DA ACADEMIA
+                    INFORMAÇÕES DO ESTÚDIO
                   </h2>
                   <p className="text-neutral-500 text-sm">
-                    Configure os dados básicos da sua academia
+                    Configure os dados básicos do seu estúdio
                   </p>
                 </div>
 
@@ -515,7 +515,7 @@ export default function ConfiguracoesPage() {
                   {/* Row 1: Nome e CNPJ */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormInput
-                      label="Nome da Academia"
+                      label="Nome do estúdio"
                       type="text"
                       value={settings.nome}
                       onChange={(e) =>
@@ -523,7 +523,7 @@ export default function ConfiguracoesPage() {
                       }
                       error={errors.nome}
                       required
-                      placeholder="Ex: GymX Academia"
+                      placeholder="Ex: Personal GYMX"
                     />
 
                     <FormInput

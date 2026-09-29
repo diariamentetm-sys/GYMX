@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { getNameInitials, getStaffRoleLabel } from "../../services/staffService";
+import { BrandMark } from "../BrandMark";
 
 interface NavItem {
   icon: any;
@@ -23,7 +24,7 @@ export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { staffProfile, signOut, enterMemberDemo } = useAuth();
-  const staffName = staffProfile?.fullName ?? "Equipe GYMX";
+  const staffName = staffProfile?.fullName ?? "Personal GYMX";
   const staffRole = staffProfile ? getStaffRoleLabel(staffProfile.role) : "Equipe";
 
   const navItems: NavItem[] = [
@@ -48,18 +49,18 @@ export function Sidebar() {
     >
       {/* Logo e Título */}
       <div className="p-6 border-b border-neutral-800">
-        <div className="flex items-center gap-3 mb-2">
+        <div className="flex items-center gap-3 mb-2 group">
           <div className="w-10 h-10 bg-yellow-400 rounded flex items-center justify-center">
             <Dumbbell className="text-yellow-900" size={24} strokeWidth={2.5} />
           </div>
           <div>
-            <h1 className="font-display text-2xl font-black text-white tracking-tight">
-              GYMX
+            <h1 className="group">
+              <BrandMark stacked className="text-2xl" />
             </h1>
           </div>
         </div>
         <p className="text-neutral-500 text-xs uppercase tracking-wider font-semibold">
-          Administração de alunos
+          Painel do personal
         </p>
       </div>
 

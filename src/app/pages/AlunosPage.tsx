@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { HeartPulse, Mail, Phone, Radio, Search, UserPlus } from "lucide-react";
 import { Sidebar } from "../components/dashboard/Sidebar";
+import { BrandMark } from "../components/BrandMark";
 import { ParQReviewModal } from "../components/dashboard/ParQReviewModal";
 import {
   getNameInitials,
@@ -86,9 +87,9 @@ export default function AlunosPage() {
           <button
             type="button"
             onClick={() => navigate("/dashboard")}
-            className="font-display text-xl font-black text-white"
+            className="group"
           >
-            GYMX
+            <BrandMark className="text-xl" />
           </button>
           <span className="text-neutral-400 text-xs uppercase tracking-wider">Alunos</span>
         </div>
@@ -297,6 +298,20 @@ export default function AlunosPage() {
                           Avaliar PAR-Q
                         </button>
                       )}
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/dashboard/alunos/${student.id}`)}
+                        className="px-4 py-3 bg-neutral-800 hover:bg-neutral-700 text-white rounded-md font-bold uppercase text-xs tracking-wide"
+                      >
+                        Ver aluno
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/dashboard/alunos/${student.id}/treino`)}
+                        className="px-4 py-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 rounded-md font-bold uppercase text-xs tracking-wide"
+                      >
+                        Treino
+                      </button>
                     </div>
                   </motion.div>
                 );

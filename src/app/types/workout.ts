@@ -31,6 +31,7 @@ export interface WorkoutExercise {
   loadKg?: number;
   restSeconds: number;
   notes?: string;
+  videoRef?: string;
   videoUrl?: string;
 }
 

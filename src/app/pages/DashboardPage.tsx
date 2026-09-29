@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { BrandMark } from "../components/BrandMark";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -67,11 +68,11 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-yellow-400 rounded flex items-center justify-center">
               <span className="text-yellow-900 font-display font-black text-lg">
-                G
+                P
               </span>
             </div>
             <h1 className="font-display text-xl font-black text-white">
-              GYMX
+              <BrandMark className="text-xl" />
             </h1>
           </div>
           <button
@@ -186,7 +187,7 @@ export default function DashboardPage() {
                 DASHBOARD
               </h1>
               <p className="text-neutral-500 text-sm">
-                Visão geral das atividades e métricas da academia
+                Visão geral dos seus alunos e da operação do estúdio
               </p>
               {demoError ? <p className="text-orange-500 text-xs mt-2">{demoError}</p> : null}
             </div>
@@ -238,7 +239,7 @@ export default function DashboardPage() {
               DASHBOARD
             </h1>
             <p className="text-neutral-500 text-sm mb-4">
-              Visão geral das atividades e métricas da academia
+              Visão geral dos seus alunos e da operação do estúdio
             </p>
             <div className="flex flex-wrap gap-2">
               <button

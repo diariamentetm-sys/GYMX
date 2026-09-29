@@ -1,6 +1,6 @@
 /**
  * Design System Constants
- * Valores centralizados do sistema de design GymX
+ * Valores centralizados do sistema de design Personal GYMX
  */
 
 // Colors

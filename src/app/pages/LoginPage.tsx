@@ -3,10 +3,12 @@ import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, LogOut, Shield } from "lucide-react";
 import { FormInput } from "../components/FormInput";
+import { BrandMark } from "../components/BrandMark";
 import { GoogleAuthButton, isGoogleAuthEnabled } from "../components/auth/GoogleAuthButton";
 import { getPostLoginRedirect } from "../services/memberService";
 import { useAuth } from "../contexts/AuthContext";
 import { scrollToPageTop } from "../utils/scroll";
+import { BRAND_SIGNUP_PATH, BRAND_STUDENT_SIGNUP_PATH } from "../constants/brand";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -129,10 +131,10 @@ export function LoginPage() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="font-display text-3xl font-black tracking-tight text-white hover:text-yellow-400 transition-colors"
+            className="group"
             aria-label="Voltar ao topo da página inicial"
           >
-            GYMX
+            <BrandMark className="text-2xl md:text-3xl" />
           </motion.button>
 
           <div className="flex items-center gap-4">
@@ -188,10 +190,10 @@ export function LoginPage() {
             className="text-center mb-12"
           >
             <h1 className="font-display text-5xl md:text-6xl font-black uppercase text-white mb-4 tracking-tight">
-              Área do <span className="text-yellow-400">Membro</span>
+              Entre no <span className="text-yellow-400">Personal</span> GYMX
             </h1>
             <p className="text-neutral-300 text-base leading-relaxed">
-              Acesse seu painel de treinos e acompanhamento
+              Personais gerem alunos no painel. Alunos acessam a ficha prescrita.
             </p>
             {justCreated ? (
               <p className="mt-4 text-yellow-400 text-sm">
@@ -263,7 +265,7 @@ export function LoginPage() {
               ) : (
                 <>
                   <Shield size={18} strokeWidth={2} />
-                  Acessar Área do Membro
+                  Entrar
                 </>
               )}
             </motion.button>
@@ -298,7 +300,7 @@ export function LoginPage() {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-4 bg-neutral-950 text-neutral-500 uppercase tracking-wider text-xs font-semibold">
-                Ainda não é membro?
+                Ainda não tem conta?
               </span>
             </div>
           </div>
@@ -310,23 +312,23 @@ export function LoginPage() {
             className="space-y-3"
           >
             <Link
-              to="/cadastro"
+              to={BRAND_SIGNUP_PATH}
+              className="block w-full text-center py-4 bg-yellow-400 text-yellow-900 rounded-md font-bold uppercase text-sm tracking-wider hover:bg-yellow-300 transition-all"
+            >
+              Criar conta de personal
+            </Link>
+            <Link
+              to={BRAND_STUDENT_SIGNUP_PATH}
               className="block w-full text-center py-4 bg-neutral-800 border-2 border-neutral-700 text-white rounded-md font-bold uppercase text-sm tracking-wider hover:border-yellow-400 hover:text-yellow-400 transition-all"
             >
-              Criar conta de aluno
+              Sou aluno do meu personal
             </Link>
             <a
               href="/#planos"
               className="block w-full text-center py-4 border-2 border-neutral-700 text-neutral-400 rounded-md font-bold uppercase text-sm tracking-wider hover:border-yellow-400 hover:text-yellow-400 transition-all"
             >
-              Conhecer os Planos
+              Ver planos para personais
             </a>
-            <Link
-              to="/acesso-equipe"
-              className="block w-full text-center py-3 text-neutral-500 text-xs uppercase tracking-wider hover:text-yellow-400 transition-colors"
-            >
-              Acesso da equipe
-            </Link>
           </motion.div>
 
           <div className="md:hidden flex flex-col items-center gap-4 mt-8">
