@@ -9,7 +9,7 @@ import {
   TrendingUp,
   XCircle,
 } from "lucide-react";
-import { MemberLayout } from "../../components/member/MemberLayout";
+import { Link } from "react-router";
 import { RequireMemberAccess } from "../../components/auth/RequireMemberAccess";
 import { PlanCard, PaymentModal } from "../../components/member/PlanCard";
 import { useAuth } from "../../contexts/AuthContext";
@@ -31,7 +31,7 @@ import {
   simulateCancellation,
   toggleAutoRenew,
 } from "../../services/subscriptionService";
-import type { GymPlan, MemberSubscription, SubscriptionPayment } from "../../types/subscription";
+import { personalPublicPath } from "../../types/personal";
 import {
   formatCurrency,
   formatDateBR,
@@ -301,11 +301,21 @@ export default function MemberPlanPage() {
             <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
                 <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">
-                  Plano vigente
+                  {subscription.personal ? "Acompanhamento" : "Plano vigente"}
                 </p>
                 <h2 className="font-display text-3xl font-black text-white">
-                  {subscription.plan?.name ?? subscription.planId}
+                  {subscription.personal?.fullName ??
+                    subscription.plan?.name ??
+                    subscription.planId}
                 </h2>
+                {subscription.personal ? (
+                  <Link
+                    to={personalPublicPath(subscription.personal.slug)}
+                    className="text-yellow-400 text-xs font-semibold uppercase mt-2 inline-block"
+                  >
+                    Ver página do personal
+                  </Link>
+                ) : null}
                 <p className="text-yellow-400 font-bold mt-1">
                   {formatCurrency(subscription.monthlyPrice)}/mês
                 </p>
@@ -377,30 +387,24 @@ export default function MemberPlanPage() {
         )}
 
         {!hasActivePlan && (
-          <section className="mb-10">
-            <h3 className="text-white font-bold uppercase text-sm tracking-wide mb-4">
-              Contratar plano
+          <section className="mb-10 bg-gradient-to-br from-neutral-900 to-neutral-800 border border-neutral-700 rounded-md p-8">
+            <h3 className="text-white font-display font-black uppercase text-2xl mb-3">
+              Contrate um personal
             </h3>
-            <p className="text-neutral-400 text-sm mb-6">
-              Exibimos valor, periodicidade, benefícios e fidelidade antes da confirmação.
-              {profile?.parQStatus === "encaminhar_avaliacao" &&
-                " O plano será ativado administrativamente, mas treinos automáticos permanecem bloqueados até avaliação do PAR-Q."}
+            <p className="text-neutral-400 text-sm mb-6 max-w-xl">
+              A mensalidade é do serviço daquele profissional, cobrada todo mês pela
+              plataforma. Escolha na vitrine ou abra o link que ele compartilhou.
             </p>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {plans.map((plan) => (
-                <PlanCard
-                  key={plan.id}
-                  plan={plan}
-                  featured={plan.id === "plus"}
-                  actionLabel="Contratar"
-                  onSelect={() => handleSelectPlan(plan, "contract")}
-                />
-              ))}
-            </div>
+            <Link
+              to="/#personais"
+              className="inline-flex bg-yellow-400 text-yellow-900 px-6 py-3 rounded font-bold uppercase text-sm"
+            >
+              Ver personais
+            </Link>
           </section>
         )}
 
-        {subscription?.status === "ativo" && (
+        {subscription?.status === "ativo" && !subscription.personalId && (
           <>
             <section className="mb-10">
               <div className="flex items-center gap-2 mb-4">
@@ -451,7 +455,22 @@ export default function MemberPlanPage() {
                   ))}
               </div>
             </section>
+          </>
+        )}
 
+        {subscription?.status === "ativo" && subscription.personalId ? (
+          <section className="mb-10 bg-neutral-900 border border-neutral-700 rounded-md p-6">
+            <h3 className="text-white font-bold uppercase text-sm tracking-wide mb-2">
+              Como funciona a cobrança
+            </h3>
+            <p className="text-neutral-400 text-sm">
+              Você paga a mensalidade deste personal todo mês. Um percentual fica com o
+              Personal GYMX; o restante vai para o profissional.
+            </p>
+          </section>
+        ) : null}
+
+        {subscription?.status === "ativo" && (
             <section className="mb-10 bg-neutral-900 border border-neutral-700 rounded-md p-6">
               <div className="flex items-center gap-2 mb-4">
                 <PauseCircle className="text-blue-400" size={18} />
@@ -494,7 +513,6 @@ export default function MemberPlanPage() {
                 Solicitar trancamento
               </button>
             </section>
-          </>
         )}
 
         {subscription &&

@@ -46,9 +46,9 @@
   --switch-background: var(--neutral-500);
   --ring: var(--yellow-400);
 
-  /* Font Families */
-  --font-display: 'Bebas Neue', 'Barlow Condensed', 'Anton', sans-serif;
-  --font-body: 'Inter', 'DM Sans', 'Manrope', sans-serif;
+  /* Font Families — display is Bebas Neue Regular mapped to all weights */
+  --family-display: "Bebas Neue", sans-serif;
+  --family-body: "Inter", system-ui, sans-serif;
 
   /* Typography Scale */
   --text-h1: 80px;
@@ -147,9 +147,19 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Font Families */
-  --font-family-display: var(--font-display);
-  --font-family-body: var(--font-body);
+  /* Font families → font-display / font-sans / font-body utilities */
+  --font-display: var(--family-display);
+  --font-sans: var(--family-body);
+  --font-body: var(--family-body);
+}
+
+@utility font-display {
+  font-family: "Bebas Neue", sans-serif;
+  font-synthesis-weight: none;
+}
+
+@utility font-body {
+  font-family: "Inter", system-ui, sans-serif;
 }
 
 @layer base {
@@ -159,7 +169,7 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-body);
+    font-family: var(--family-body);
     overflow-x: hidden;
   }
 
@@ -169,9 +179,16 @@
     scroll-behavior: smooth;
   }
 
-  /* Display Typography - Bebas Neue / Condensed Bold */
+  /* Display Typography - Bebas Neue Regular (mapped to bold/black) */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-synthesis-weight: none;
+  }
+
   h1 {
-    font-family: var(--font-display);
+    font-family: var(--family-display);
     font-size: var(--text-h1);
     font-weight: var(--font-weight-black);
     line-height: 0.9;
@@ -181,7 +198,7 @@
   }
 
   h2 {
-    font-family: var(--font-display);
+    font-family: var(--family-display);
     font-size: var(--text-h2);
     font-weight: var(--font-weight-black);
     line-height: 1.0;
@@ -191,7 +208,7 @@
   }
 
   h3 {
-    font-family: var(--font-display);
+    font-family: var(--family-display);
     font-size: var(--text-h3);
     font-weight: var(--font-weight-bold);
     line-height: 1.1;
@@ -201,7 +218,7 @@
   }
 
   h4 {
-    font-family: var(--font-display);
+    font-family: var(--family-display);
     font-size: var(--text-h4);
     font-weight: var(--font-weight-bold);
     line-height: 1.2;
@@ -212,15 +229,21 @@
 
   /* Body Typography */
   p {
-    font-family: var(--font-body);
+    font-family: var(--family-body);
     font-size: var(--text-body);
     font-weight: var(--font-weight-normal);
     line-height: 1.6;
     color: var(--neutral-050);
   }
 
+  p.font-display,
+  span.font-display {
+    font-family: var(--family-display);
+    font-synthesis-weight: none;
+  }
+
   label {
-    font-family: var(--font-body);
+    font-family: var(--family-body);
     font-size: var(--text-label);
     font-weight: var(--font-weight-semibold);
     line-height: 1.0;
@@ -229,14 +252,14 @@
   }
 
   button {
-    font-family: var(--font-body);
+    font-family: var(--family-body);
     font-size: var(--text-body);
     font-weight: var(--font-weight-semibold);
     line-height: 1.5;
   }
 
   input {
-    font-family: var(--font-body);
+    font-family: var(--family-body);
     font-size: var(--text-body);
     font-weight: var(--font-weight-normal);
     line-height: 1.5;

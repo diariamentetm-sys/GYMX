@@ -11,18 +11,20 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 import type { MemberProfile, RegisterFormData } from "../types/member";
 import type { StaffProfile } from "../types/staff";
+import type { OperatorProfile } from "../types/operator";
 import {
   loadMemberProfile,
   registerMember,
   signInMember,
-  signInWithGoogle as startGoogleSignIn,
   signOutMember,
 } from "../services/memberService";
 import { loadStaffProfile, registerStaffAccount, startStaffMemberDemo } from "../services/staffService";
+import { loadOperatorProfile } from "../services/operatorService";
 
 interface SignInResult {
   profile: MemberProfile | null;
   staff: StaffProfile | null;
+  operator: OperatorProfile | null;
   error?: string;
 }
 
@@ -30,11 +32,11 @@ interface AuthContextValue {
   session: Session | null;
   profile: MemberProfile | null;
   staffProfile: StaffProfile | null;
+  operatorProfile: OperatorProfile | null;
   loading: boolean;
   isPasswordRecovery: boolean;
   refreshProfile: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<SignInResult>;
-  signInWithGoogle: () => Promise<{ error?: string }>;
   signUp: (data: RegisterFormData) => Promise<{
     profile: MemberProfile | null;
     sessionCreated?: boolean;
@@ -53,17 +55,19 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 async function loadAccount(userId: string) {
-  const [staff, profile] = await Promise.all([
+  const [staff, profile, operator] = await Promise.all([
     loadStaffProfile(userId),
     loadMemberProfile(userId),
+    loadOperatorProfile(userId),
   ]);
-  return { staff, profile };
+  return { staff, profile, operator };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<MemberProfile | null>(null);
   const [staffProfile, setStaffProfile] = useState<StaffProfile | null>(null);
+  const [operatorProfile, setOperatorProfile] = useState<OperatorProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPasswordRecovery, setIsPasswordRecovery] = useState(false);
 
@@ -71,12 +75,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!userId) {
       setProfile(null);
       setStaffProfile(null);
+      setOperatorProfile(null);
       return;
     }
 
     const account = await loadAccount(userId);
     setStaffProfile(account.staff);
     setProfile(account.profile);
+    setOperatorProfile(account.operator);
   }, []);
 
   const refreshProfile = useCallback(async () => {
@@ -103,6 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!mounted) return;
         setStaffProfile(account.staff);
         setProfile(account.profile);
+        setOperatorProfile(account.operator);
       }
 
       if (mounted) setLoading(false);
@@ -127,9 +134,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const account = await loadAccount(nextSession.user.id);
         setStaffProfile(account.staff);
         setProfile(account.profile);
+        setOperatorProfile(account.operator);
       } else {
         setStaffProfile(null);
         setProfile(null);
+        setOperatorProfile(null);
       }
 
       setLoading(false);
@@ -144,7 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = useCallback(async (email: string, password: string): Promise<SignInResult> => {
     const result = await signInMember(email, password);
     if (result.error) {
-      return { profile: null, staff: null, error: result.error };
+      return { profile: null, staff: null, operator: null, error: result.error };
     }
 
     const {
@@ -152,17 +161,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } = await supabase.auth.getSession();
 
     if (!currentSession?.user) {
-      return { profile: null, staff: null, error: "Falha ao autenticar." };
+      return { profile: null, staff: null, operator: null, error: "Falha ao autenticar." };
     }
 
     const account = await loadAccount(currentSession.user.id);
     setStaffProfile(account.staff);
     setProfile(account.profile);
+    setOperatorProfile(account.operator);
     return account;
-  }, []);
-
-  const signInWithGoogle = useCallback(async () => {
-    return startGoogleSignIn();
   }, []);
 
   const signUp = useCallback(async (data: RegisterFormData) => {
@@ -170,6 +176,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (result.profile) {
       setProfile(result.profile);
       setStaffProfile(null);
+      setOperatorProfile(null);
     }
     return result;
   }, []);
@@ -180,6 +187,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (result.staff) {
         setStaffProfile(result.staff);
         setProfile(null);
+        setOperatorProfile(null);
       }
       return result;
     },
@@ -190,6 +198,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signOutMember();
     setProfile(null);
     setStaffProfile(null);
+    setOperatorProfile(null);
     setSession(null);
     setIsPasswordRecovery(false);
   }, []);
@@ -215,11 +224,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       session,
       profile,
       staffProfile,
+      operatorProfile,
       loading,
       isPasswordRecovery,
       refreshProfile,
       signIn,
-      signInWithGoogle,
       signUp,
       signUpStaff,
       signOut,
@@ -230,11 +239,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       session,
       profile,
       staffProfile,
+      operatorProfile,
       loading,
       isPasswordRecovery,
       refreshProfile,
       signIn,
-      signInWithGoogle,
       signUp,
       signUpStaff,
       signOut,

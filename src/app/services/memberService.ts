@@ -15,7 +15,8 @@ import {
   evaluateParQ,
   getParQStatus,
 } from "../utils/parq";
-import { stripCpf } from "../utils/cpf";
+import { peekPendingPersonalSlug } from "../utils/pendingPersonal";
+import { personalPublicPath } from "../types/personal";
 
 interface MemberProfileRow {
   id: string;
@@ -303,20 +304,6 @@ export async function updateMemberPassword(
       return { error: "A senha deve ter no mínimo 6 caracteres." };
     }
     return { error: "Não foi possível atualizar a senha. Solicite um novo link." };
-  }
-
-  return {};
-}
-
-export async function signInWithGoogle(): Promise<{ error?: string }> {
-  const redirectTo = `${window.location.origin}/login`;
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo },
-  });
-
-  if (error) {
-    return { error: "Não foi possível iniciar o login com Google." };
   }
 
   return {};
@@ -768,6 +755,11 @@ export function getPostLoginRedirect(profile: MemberProfile): string {
 
   if (profile.status === "pendente_correcao") {
     return "/portal/onboarding";
+  }
+
+  const pendingPersonal = peekPendingPersonalSlug();
+  if (pendingPersonal) {
+    return personalPublicPath(pendingPersonal);
   }
 
   return "/portal";

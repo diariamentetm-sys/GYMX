@@ -159,6 +159,16 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={() => {
+                  navigate("/interno");
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-left px-4 py-3 rounded-md font-semibold text-sm uppercase text-yellow-400 hover:bg-neutral-800"
+              >
+                Documentação
+              </button>
+              <button
+                type="button"
+                onClick={() => {
                   openDemo("portal");
                   setMobileMenuOpen(false);
                 }}

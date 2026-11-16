@@ -21,14 +21,14 @@ export function FAQSection() {
         "De você. Cole o link do YouTube, Vimeo ou Loom na ficha do aluno. A URL fica naquele treino e aparece em Meu Treino. Dá para reutilizar da sua biblioteca nas próximas prescrições.",
     },
     {
-      question: "Meu aluno também precisa de conta?",
+      question: "Como o aluno encontra um personal?",
       answer:
-        "Sim. Cada aluno entra no portal com o próprio login. Lá ele vê só a ficha que você prescreveu, faz check-in e acompanha o plano. Você continua no painel de personal.",
+        "Na landing há uma lista pública de personais. Cada um tem uma página com URL própria para divulgar o trabalho. Se fizer sentido, o aluno contrata o serviço pela plataforma — sem convite.",
     },
     {
-      question: "Consigo começar sozinho, sem equipe?",
+      question: "Como funciona a mensalidade?",
       answer:
-        "Sim. O plano Start é para o personal autônomo. Studio entra quando você já tem outros profissionais no mesmo estúdio.",
+        "O aluno paga todo mês o valor do personal que contratou. Um percentual fica com o Personal GYMX; o restante vai para o profissional.",
     },
     {
       question: "Preciso ter CREF para me cadastrar?",

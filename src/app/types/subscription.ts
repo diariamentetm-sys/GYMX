@@ -1,3 +1,5 @@
+import type { PublicPersonalProfile } from "./personal";
+
 export type SubscriptionStatus =
   | "pendente_pagamento"
   | "ativo"
@@ -29,6 +31,8 @@ export interface MemberSubscription {
   id: string;
   memberId: string;
   planId: string;
+  personalId?: string;
+  personal?: PublicPersonalProfile;
   status: SubscriptionStatus;
   monthlyPrice: number;
   loyaltyStart?: string;

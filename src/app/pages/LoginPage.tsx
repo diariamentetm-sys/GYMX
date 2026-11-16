@@ -4,10 +4,11 @@ import { Link, useNavigate } from "react-router";
 import { ArrowLeft, LogOut, Shield } from "lucide-react";
 import { FormInput } from "../components/FormInput";
 import { BrandMark } from "../components/BrandMark";
-import { GoogleAuthButton, isGoogleAuthEnabled } from "../components/auth/GoogleAuthButton";
 import { getPostLoginRedirect } from "../services/memberService";
 import { useAuth } from "../contexts/AuthContext";
 import { scrollToPageTop } from "../utils/scroll";
+import { capturePersonalSlugFromSearch, peekPendingPersonalSlug } from "../utils/pendingPersonal";
+import { personalPublicPath } from "../types/personal";
 import { BRAND_SIGNUP_PATH, BRAND_STUDENT_SIGNUP_PATH } from "../constants/brand";
 
 export function LoginPage() {
@@ -21,6 +22,10 @@ export function LoginPage() {
   const passwordUpdated = new URLSearchParams(window.location.search).get("senha") === "ok";
 
   useEffect(() => {
+    capturePersonalSlugFromSearch(window.location.search);
+  }, []);
+
+  useEffect(() => {
     if (loading) return;
     if (isPasswordRecovery && session) {
       navigate("/redefinir-senha", { replace: true });
@@ -31,20 +36,14 @@ export function LoginPage() {
       return;
     }
     if (session && profile) {
-      navigate(getPostLoginRedirect(profile), { replace: true });
+      const pending = peekPendingPersonalSlug();
+      const target =
+        profile.onboardingCompleted && pending
+          ? personalPublicPath(pending)
+          : getPostLoginRedirect(profile);
+      navigate(target, { replace: true });
     }
   }, [loading, session, profile, staffProfile, navigate, isPasswordRecovery]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const oauthError = params.get("error_description") ?? params.get("error");
-    if (!oauthError) return;
-
-    setErrors((current) => ({
-      ...current,
-      password: decodeURIComponent(oauthError.replace(/\+/g, " ")),
-    }));
-  }, []);
 
   const handleGoHome = () => {
     navigate("/");
@@ -271,28 +270,12 @@ export function LoginPage() {
             </motion.button>
           </motion.form>
 
-          {hasActiveSession && !profile && !loading && (
+          {hasActiveSession && !profile && !staffProfile && !loading && (
             <p className="mt-4 text-center text-orange-500 text-sm">
-              Conta Google autenticada, mas o perfil do aluno ainda não existe. Conclua o
-              cadastro ou fale com a recepção.
+              Sessão ativa, mas o perfil ainda não existe. Conclua o cadastro ou fale com a
+              recepção.
             </p>
           )}
-
-          {isGoogleAuthEnabled ? (
-            <>
-              <div className="relative my-8">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-neutral-800" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-neutral-950 text-neutral-500 uppercase tracking-wider text-xs font-semibold">
-                    ou
-                  </span>
-                </div>
-              </div>
-              <GoogleAuthButton disabled={isLoading || loading} />
-            </>
-          ) : null}
 
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">

@@ -44,10 +44,15 @@ export function AuthFlowRedirect() {
 
     if (loading || !session) return;
 
+    if (location.pathname.startsWith("/interno")) {
+      return;
+    }
+
     if (staffProfile) {
       const staffStay =
         location.pathname.startsWith("/dashboard") ||
         location.pathname.startsWith("/modo-recepcao") ||
+        location.pathname.startsWith("/p/") ||
         location.pathname === "/acesso-equipe" ||
         (Boolean(profile) && location.pathname.startsWith("/portal"));
       if (staffStay) return;
@@ -68,6 +73,13 @@ export function AuthFlowRedirect() {
     if (
       location.pathname.startsWith("/dashboard") ||
       location.pathname.startsWith("/modo-recepcao")
+    ) {
+      return;
+    }
+
+    if (
+      (location.pathname === "/" || location.pathname.startsWith("/p/")) &&
+      !hasAuthCallback(location.search, location.hash)
     ) {
       return;
     }

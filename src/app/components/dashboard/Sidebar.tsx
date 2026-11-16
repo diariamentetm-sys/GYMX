@@ -7,11 +7,13 @@ import {
   Settings,
   LogOut,
   Dumbbell,
-  Eye
+  Eye,
+  Shield
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { getNameInitials, getStaffRoleLabel } from "../../services/staffService";
 import { BrandMark } from "../BrandMark";
+import { INTERNAL_PATH } from "../../constants/internal";
 
 interface NavItem {
   icon: any;
@@ -102,7 +104,20 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="px-4 pb-2">
+      <div className="px-4 pb-2 space-y-2">
+        {staffProfile ? (
+          <motion.button
+            onClick={() => navigate(INTERNAL_PATH)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-md text-yellow-400 hover:bg-neutral-800 transition-all"
+          >
+            <Shield size={20} strokeWidth={2} />
+            <span className="font-medium text-sm uppercase tracking-wide">
+              Documentação
+            </span>
+          </motion.button>
+        ) : null}
         <motion.button
           onClick={async () => {
             const result = await enterMemberDemo("portal");

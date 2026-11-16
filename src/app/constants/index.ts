@@ -33,8 +33,8 @@ export const COLORS = {
 // Typography
 export const TYPOGRAPHY = {
   fontFamily: {
-    display: "'Bebas Neue', 'Barlow Condensed', 'Anton', sans-serif",
-    body: "'Inter', 'DM Sans', 'Manrope', sans-serif",
+    display: "'Bebas Neue', sans-serif",
+    body: "'Inter', system-ui, sans-serif",
   },
   fontSize: {
     h1: "80px",
@@ -52,6 +52,22 @@ export const TYPOGRAPHY = {
     semibold: 600,
     medium: 500,
     normal: 400,
+  },
+  lineHeight: {
+    h1: 0.9,
+    h2: 1.0,
+    h3: 1.1,
+    h4: 1.2,
+    body: 1.6,
+    label: 1.0,
+  },
+  letterSpacing: {
+    h1: "-0.02em",
+    h2: "-0.01em",
+    h3: "0em",
+    h4: "0.04em",
+    body: "0em",
+    label: "0.08em",
   },
 } as const;
 

@@ -8,6 +8,7 @@ export { Hero } from "./Hero";
 export { TickerStrip } from "./TickerStrip";
 export { AboutSection } from "./AboutSection";
 export { TestimonialsSection } from "./TestimonialsSection";
+export { PersonalsSection } from "./PersonalsSection";
 export { PricingSection } from "./PricingSection";
 export { FAQSection } from "./FAQSection";
 export { FinalCTA } from "./FinalCTA";

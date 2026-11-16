@@ -7,6 +7,8 @@ import type {
   SubscriptionPayment,
   SubscriptionStatus,
 } from "../types/subscription";
+import type { PublicPersonalProfile } from "../types/personal";
+import { fetchPersonalByStaffId } from "./personalDirectoryService";
 import {
   calculateUpgradeProrata,
   simulateCancellation,
@@ -32,6 +34,7 @@ interface SubscriptionRow {
   id: string;
   member_id: string;
   plan_id: string;
+  personal_id: string | null;
   status: SubscriptionStatus;
   monthly_price: number;
   loyalty_start: string | null;
@@ -77,12 +80,15 @@ function mapPlan(row: GymPlanRow): GymPlan {
 function mapSubscription(
   row: SubscriptionRow,
   plan?: GymPlan,
-  scheduledPlan?: GymPlan
+  scheduledPlan?: GymPlan,
+  personal?: PublicPersonalProfile
 ): MemberSubscription {
   return {
     id: row.id,
     memberId: row.member_id,
     planId: row.plan_id,
+    personalId: row.personal_id ?? undefined,
+    personal,
     status: row.status,
     monthlyPrice: Number(row.monthly_price),
     loyaltyStart: row.loyalty_start ?? undefined,
@@ -157,8 +163,11 @@ export async function fetchMemberSubscription(
   const scheduledPlan = row.scheduled_plan_id
     ? plans.find((p) => p.id === row.scheduled_plan_id)
     : undefined;
+  const personal = row.personal_id
+    ? await fetchPersonalByStaffId(row.personal_id)
+    : null;
 
-  const subscription = mapSubscription(row, plan, scheduledPlan);
+  const subscription = mapSubscription(row, plan, scheduledPlan, personal ?? undefined);
 
   if (
     subscription.status === "pendente_pagamento" &&

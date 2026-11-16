@@ -3,7 +3,7 @@ import { Hero } from "../components/Hero";
 import { TickerStrip } from "../components/TickerStrip";
 import { AboutSection } from "../components/AboutSection";
 import { TestimonialsSection } from "../components/TestimonialsSection";
-import { PricingSection } from "../components/PricingSection";
+import { PersonalsSection } from "../components/PersonalsSection";
 import { FAQSection } from "../components/FAQSection";
 import { FinalCTA } from "../components/FinalCTA";
 import { ContactFormSection } from "../components/ContactFormSection";
@@ -28,7 +28,7 @@ export function HomePage() {
       <TickerStrip />
       <AboutSection />
       <TestimonialsSection />
-      <PricingSection />
+      <PersonalsSection />
       <FAQSection />
       <FinalCTA />
       <ContactFormSection />

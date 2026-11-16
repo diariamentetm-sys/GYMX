@@ -1,8 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AuthFlowRedirect } from "./components/auth/AuthFlowRedirect";
 import { RequireStaff } from "./components/auth/RequireStaff";
+import { RequireOperator } from "./components/auth/RequireOperator";
 import { StaffAccessPage } from "./pages/StaffAccessPage";
+import { InternalAccessPage } from "./pages/internal/InternalAccessPage";
+import InternalProductPage from "./pages/internal/InternalProductPage";
 import { AppErrorBoundary } from "./components/AppErrorBoundary";
 import { isSupabaseConfigured } from "./lib/supabase";
 import { HomePage } from "./pages/HomePage";
@@ -11,6 +14,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { VerifyAccountPage } from "./pages/VerifyAccountPage";
 import { RecoverPasswordPage } from "./pages/RecoverPasswordPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
+import { PersonalPublicPage } from "./pages/PersonalPublicPage";
 import MemberHomePage from "./pages/member/MemberHomePage";
 import MemberWorkoutPage from "./pages/member/MemberWorkoutPage";
 import MemberCheckinPage from "./pages/member/MemberCheckinPage";
@@ -55,6 +59,7 @@ export default function App() {
       <AuthFlowRedirect />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/p/:slug" element={<PersonalPublicPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cadastro" element={<RegisterPage />} />
         <Route path="/cadastro/verificacao" element={<VerifyAccountPage />} />
@@ -69,6 +74,39 @@ export default function App() {
         <Route path="/portal/plano" element={<MemberPlanPage />} />
         <Route path="/portal/perfil" element={<MemberProfilePage />} />
         <Route path="/acesso-equipe" element={<StaffAccessPage />} />
+        <Route path="/interno/entrar" element={<InternalAccessPage />} />
+        <Route
+          path="/interno"
+          element={
+            <RequireOperator>
+              <Navigate to="/interno/imersao" replace />
+            </RequireOperator>
+          }
+        />
+        <Route
+          path="/interno/imersao"
+          element={
+            <RequireOperator>
+              <InternalProductPage />
+            </RequireOperator>
+          }
+        />
+        <Route
+          path="/interno/ideacao"
+          element={
+            <RequireOperator>
+              <InternalProductPage />
+            </RequireOperator>
+          }
+        />
+        <Route
+          path="/interno/melhoria"
+          element={
+            <RequireOperator>
+              <InternalProductPage />
+            </RequireOperator>
+          }
+        />
         <Route path="/dashboard" element={<RequireStaff><DashboardPage /></RequireStaff>} />
         <Route path="/dashboard/alunos" element={<RequireStaff><AlunosPage /></RequireStaff>} />
         <Route path="/dashboard/alunos/novo" element={<RequireStaff><NewStudentPage /></RequireStaff>} />

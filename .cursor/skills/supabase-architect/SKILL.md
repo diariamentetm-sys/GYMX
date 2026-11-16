@@ -273,7 +273,7 @@ Quando tiver sugestão de melhoria (não bloqueante), usa:
 
 ## Como executar neste projeto (GymX)
 
-Este repositório **não versiona** `supabase/migrations/` nem `supabase/config.toml`. O schema vive no projeto remoto. Adaptar a coleta de contexto assim:
+Existe **um** backend: projeto **Projetos** (`brgucbuhwaxbwphkoogh`). O GymX é o schema `gym_academy`, ao lado de `brecho_limeira` e `rodolfo_bellarosa`. Migrations locais em `supabase/migrations/`. Auth compartilhado: isolamento via `is_gymx_signup` e trigger `on_auth_user_created_gymx` (não substituir o trigger do Brechó). O projeto antigo `sdikmodprrcgwlpeyuav` é arquivo morto — nunca usar. Adaptar a coleta de contexto assim:
 
 1. Ler `src/app/lib/supabase.ts`, `src/app/services/*`, `src/app/types/*` e `REGRAS_NEGOCIO_AREA_ALUNO.md`.
 2. Confirmar que `.env` existe, **sem imprimir secrets**. Frontend só pode ter `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`.

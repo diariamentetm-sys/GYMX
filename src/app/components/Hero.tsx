@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { PERSONALS_SECTION_HREF } from "../constants/anchors";
 import { BRAND_LOGIN_PATH, BRAND_SIGNUP_PATH } from "../constants/brand";
 
 export function Hero() {
@@ -77,19 +78,19 @@ export function Hero() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12"
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                to={BRAND_SIGNUP_PATH}
+              <a
+                href={PERSONALS_SECTION_HREF}
                 className="inline-block bg-yellow-400 text-yellow-900 px-10 py-5 rounded font-bold uppercase text-sm tracking-wide hover:bg-yellow-300 transition-colors"
               >
-                Cadastrar meu estúdio →
-              </Link>
+                Quero um personal →
+              </a>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
-                to={BRAND_LOGIN_PATH}
+                to={BRAND_SIGNUP_PATH}
                 className="inline-block bg-transparent border-2 border-white text-white px-10 py-5 rounded font-bold uppercase text-sm tracking-wide hover:bg-white hover:text-neutral-950 transition-all"
               >
-                Já tenho conta
+                Sou personal
               </Link>
             </motion.div>
           </motion.div>
@@ -100,7 +101,10 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 1.5 }}
             className="text-neutral-300 text-sm mt-6"
           >
-            Monte a primeira ficha em minutos. O aluno vê o treino e o seu vídeo no portal.
+            Aluno escolhe o personal na vitrine e contrata pela plataforma.{" "}
+            <Link to={BRAND_LOGIN_PATH} className="text-yellow-400 hover:text-yellow-300">
+              Já tenho conta
+            </Link>
           </motion.p>
         </motion.div>
 

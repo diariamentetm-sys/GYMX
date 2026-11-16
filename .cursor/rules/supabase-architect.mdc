@@ -19,7 +19,7 @@ Nunca assumir o schema. Ler o contexto primeiro.
 2. **Diagnóstico** — objetivo, impacto, conflito de policy, risco de segurança/performance.
 3. **Proposta** — SQL pronto, policies, funções, raciocínio, trade-offs, rollback.
 
-Neste repo as migrations estão em `supabase/migrations/`. O GymX usa o projeto Supabase **GYMX** (`sdikmodprrcgwlpeyuav`) com Auth próprio. Schema **`gym_academy`**. Nunca apontar o app para `brgucbuhwaxbwphkoogh` (Projetos — Auth compartilhado de outros produtos). Inspectar via MCP (`list_tables` com schema gym_academy, `list_migrations`, `execute_sql`, `get_advisors`) e o cliente em `src/app/lib/supabase.ts` (`db.schema: "gym_academy"`).
+Neste repo as migrations estão em `supabase/migrations/`. Existe **um** backend: o projeto Supabase **Projetos** (`brgucbuhwaxbwphkoogh`). O GymX é o schema **`gym_academy`**, ao lado de `brecho_limeira`, `rodolfo_bellarosa` e os demais. Isolamento de Auth via `is_gymx_signup` (metadata `app=gymx` / `account_type=staff` / CPF) e trigger extra `on_auth_user_created_gymx` — nunca substituir o trigger do Brechó. O projeto antigo `sdikmodprrcgwlpeyuav` (nome GYMX) é arquivo morto: não apontar o app, não aplicar migration, não restaurar. Inspectar via MCP no **Projetos** (`list_tables` com schema gym_academy, `list_migrations`, `execute_sql`, `get_advisors`) e o cliente em `src/app/lib/supabase.ts` (`db.schema: "gym_academy"`).
 
 ## Segurança
 

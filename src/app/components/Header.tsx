@@ -13,8 +13,7 @@ export function Header() {
   const navItems = [
     { label: "Início", href: "#inicio" },
     { label: "Como funciona", href: "#quem-somos" },
-    { label: "Planos", href: "#planos" },
-    { label: "Personais", href: "#depoimentos" },
+    { label: "Personais", href: "#personais" },
     { label: "FAQ", href: "#faq" },
     { label: "Contato", href: "#contato" },
   ];

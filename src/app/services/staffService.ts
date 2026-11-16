@@ -180,7 +180,7 @@ export async function listStaffMembers(): Promise<{
   const { data, error } = await supabase
     .from("member_profiles")
     .select(
-      "id, full_name, email, phone, status, par_q_status, par_q_completed_at, onboarding_completed, is_demo, member_subscriptions(status, plan_id)"
+      "id, full_name, email, phone, status, par_q_status, par_q_completed_at, onboarding_completed, is_demo, member_subscriptions(status, plan_id, personal_id)"
     )
     .order("full_name", { ascending: true });
 
@@ -194,7 +194,7 @@ export async function listStaffMembers(): Promise<{
   const members: StaffMemberListItem[] = (data ?? []).map((row) => {
     const subscriptions = (Array.isArray(row.member_subscriptions)
       ? row.member_subscriptions
-      : []) as Array<{ status: string; plan_id: string }>;
+      : []) as Array<{ status: string; plan_id: string; personal_id?: string }>;
     const activePlan = subscriptions.find((item) => item.status === "ativo");
     const anyPlan = activePlan ?? subscriptions[0];
 
@@ -210,7 +210,8 @@ export async function listStaffMembers(): Promise<{
         : undefined,
       onboardingCompleted: Boolean(row.onboarding_completed),
       isDemo: Boolean(row.is_demo),
-      planName: (anyPlan ? planNames.get(anyPlan.plan_id) : undefined) || "Sem plano",
+      planName: (anyPlan ? planNames.get(anyPlan.plan_id) : undefined) ||
+        (anyPlan?.personal_id ? "Acompanhamento" : "Sem plano"),
     };
   });
 

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { ArrowLeft, UserPlus } from "lucide-react";
 import { FormInput } from "../components/FormInput";
 import { BrandMark } from "../components/BrandMark";
-import { GoogleAuthButton, isGoogleAuthEnabled } from "../components/auth/GoogleAuthButton";
+import { capturePersonalSlugFromSearch } from "../utils/pendingPersonal";
 import { formatCpf, isMinor, isValidCpf, stripCpf } from "../utils/cpf";
 import { checkRegistrationAvailable } from "../services/memberService";
 import { useAuth } from "../contexts/AuthContext";
@@ -27,6 +27,10 @@ export function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const showGuardian = birthDate ? isMinor(birthDate) : false;
+
+  useEffect(() => {
+    capturePersonalSlugFromSearch(window.location.search);
+  }, []);
 
   useEffect(() => {
     if (session && profile?.emailVerified) {
@@ -156,22 +160,6 @@ export function RegisterPage() {
             Personais criam conta no acesso de personal.
           </p>
         </motion.div>
-
-        {isGoogleAuthEnabled ? (
-          <div className="mb-8 space-y-6">
-            <GoogleAuthButton disabled={isLoading} />
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-neutral-800" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-neutral-950 text-neutral-500 uppercase tracking-wider text-xs font-semibold">
-                  ou cadastre com e-mail
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : null}
 
         <motion.form
           initial={{ opacity: 0, y: 20 }}

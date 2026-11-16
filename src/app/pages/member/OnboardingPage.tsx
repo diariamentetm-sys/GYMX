@@ -15,8 +15,10 @@ import {
   emptyParQAnswers,
   isParQComplete,
   toParQAnswers,
+  type ParQFormState,
 } from "../../components/member/ParQForm";
-import type { ParQFormState } from "../../components/member/ParQForm";
+import { peekPendingPersonalSlug } from "../../utils/pendingPersonal";
+import { personalPublicPath } from "../../types/personal";
 
 export function OnboardingPage() {
   const navigate = useNavigate();
@@ -115,7 +117,8 @@ export function OnboardingPage() {
     }
 
     await refreshProfile();
-    navigate("/portal");
+    const pending = peekPendingPersonalSlug();
+    navigate(pending ? personalPublicPath(pending) : "/portal");
   };
 
   const hasParQRisk = Object.values(toParQAnswers(parQAnswers)).some((v) => v);

@@ -75,13 +75,13 @@ Não inverter a ordem. Não inventar callback.
 
 | Campo | Valor atual |
 |---|---|
-| Callback (passo 2 e 3) | `https://sdikmodprrcgwlpeyuav.supabase.co/auth/v1/callback` |
+| Callback (passo 2 e 3) | `https://brgucbuhwaxbwphkoogh.supabase.co/auth/v1/callback` |
 | Origin local (passo 3) | `http://localhost:5173` |
 | Site URL local (passo 5) | `http://localhost:5173` |
 | Redirect URLs local (passo 5) | `http://localhost:5173/**` |
 | Redirect no app | `signInWithOAuth({ provider: "google", options: { redirectTo: origin + "/login" } })` |
 
-⚠️ O GymX usa o projeto **GYMX** (`sdikmodprrcgwlpeyuav`), Auth isolado. Nunca usar `brgucbuhwaxbwphkoogh` (Projetos) nem Select Cars.
+⚠️ Um backend só: **Projetos** (`brgucbuhwaxbwphkoogh`), schema `gym_academy`. Isolamento de Auth por metadata GYMX (`is_gymx_signup`). Não usar Select Cars, Vaibes nem o arquivo morto `sdikmodprrcgwlpeyuav`.
 
 Produção: só adicionar origin + `https://dominio/**` depois que existir deploy (Vercel). Até lá, não colocar URL inventada.
 

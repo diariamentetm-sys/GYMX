@@ -11,9 +11,11 @@ import {
   Save,
   X,
   Radio,
+  Globe,
 } from "lucide-react";
+import { PublicProfileSettings } from "../components/dashboard/PublicProfileSettings";
 
-type Tab = "geral" | "perfil" | "planos" | "sistema";
+type Tab = "pagina" | "geral" | "perfil" | "planos" | "sistema";
 
 interface GymSettings {
   nome: string;
@@ -131,7 +133,7 @@ const initialPlans: Plan[] = [
 
 export default function ConfiguracoesPage() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<Tab>("geral");
+  const [activeTab, setActiveTab] = useState<Tab>("pagina");
 
   // Geral tab state
   const [settings, setSettings] = useState<GymSettings>(initialSettings);
@@ -414,6 +416,7 @@ export default function ConfiguracoesPage() {
   };
 
   const tabs = [
+    { id: "pagina" as Tab, label: "Página pública", icon: Globe },
     { id: "geral" as Tab, label: "Geral", icon: Building2 },
     { id: "perfil" as Tab, label: "Perfil Admin", icon: User },
     { id: "planos" as Tab, label: "Planos", icon: CreditCard },
@@ -493,6 +496,8 @@ export default function ConfiguracoesPage() {
             </motion.div>
 
             {/* Tab Content */}
+            {activeTab === "pagina" && <PublicProfileSettings />}
+
             {activeTab === "geral" && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
